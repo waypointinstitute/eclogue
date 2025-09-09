@@ -2,7 +2,7 @@
 name: Sam Burridge
 role: Editor-in-Chief
 order: 1
-headshot: /img/sam.jpg
+headshot: /assets/images/team/sam-burridge.jpg
 ---
 
 We were established in 2025 by our editor-in-chief, Sam Burridge, after multiple years of ideation and business planning.
