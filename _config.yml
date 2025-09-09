@@ -1,0 +1,4 @@
+collections:
+  books:
+    output: true
+    permalink: /books/:slug/
