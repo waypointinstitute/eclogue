@@ -38,7 +38,7 @@ permalink: /about/
         {%- for member in team_sorted -%}
           <div class="flex flex-col md:flex-row items-center text-center md:text-left gap-8">
             <img
-              src="{{ member.headshot | default: '/img/placeholders/pfp.webp' | relative_url }}"
+              src="{{ member.headshot | default: '/assets/images/team/pfp.webp' | relative_url }}"
               alt="{{ member.name | escape }}"
               class="w-32 h-32 rounded-full object-cover shadow-lg">
             <div class="flex-1">
@@ -51,10 +51,15 @@ permalink: /about/
                 {{ member.role }}
               </p>
               {%- endif -%}
+
               {%- if member.bio -%}
-              <p class="leading-relaxed" style="color: var(--text-muted);">
-                {{ member.bio }}
-              </p>
+                <p class="leading-relaxed" style="color: var(--text-muted);">
+                  {{ member.bio }}
+                </p>
+              {%- elsif member.content -%}
+                <div class="leading-relaxed" style="color: var(--text-muted);">
+                  {{ member.content | markdownify }}
+                </div>
               {%- endif -%}
             </div>
           </div>
