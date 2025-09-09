@@ -1,8 +1,13 @@
-title: ECLOGUE PRESS
-url: https://waypointinstitute.github.io   # your user org domain
-baseurl: /eclogue                           # <-- repo name, REQUIRED
-permalink: /:categories/:title/
+url: https://waypointinstitute.github.io
+baseurl: /eclogue
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
-# theme: minima   # optional; or keep your own layouts as you have now
+
+collections:
+  team:
+    output: false        # we list them on /about/, we don't need individual pages
+  books:
+    output: true         # optional if you have a /books page and detail pages
+    permalink: /books/:name/
