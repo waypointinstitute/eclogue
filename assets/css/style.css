@@ -1,32 +1,38 @@
-/* -------- Theme tokens (light / dark) -------- */
 :root{
   --bg:#f7f3ea; --surface:#fffdf7; --text:#1e1a16; --text-muted:#5b5348;
   --accent:#8e5b2f; --border:rgba(30,26,22,.14); --shadow:rgba(30,26,22,.08);
-  --font-display:"Cormorant Garamond", serif; --font-body:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-display:"Cormorant Garamond", serif;
+  --font-body:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root{
     --bg:#0b0f14; --surface:#141b23; --text:#e8eef6; --text-muted:#9fb1c5;
     --accent:#60c3ff; --border:rgba(232,238,246,.12); --shadow:rgba(0,0,0,.35);
-    --font-display:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-display:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-body:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   }
 }
 
-/* -------- Base -------- */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{font-family:var(--font-body); background:var(--bg); color:var(--text); line-height:1.6}
+body{font-family:var(--font-body); background:var(--bg); color:var(--text); line-height:1.65}
 a{color:var(--accent); text-decoration:none}
 a:hover{text-decoration:underline}
 
-.site-header{background:var(--surface); border-bottom:1px solid var(--border)}
-.brand{font-family:var(--font-display); font-size:1.5rem; font-weight:700; margin-right:1rem}
-.nav{display:inline-flex; gap:1rem; margin-left:1rem}
-.site-footer{border-top:1px solid var(--border); color:var(--text-muted)}
+/* Header */
+.site-header{background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50}
+.site-header .bar{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.85rem 0}
+.brand{font-family:var(--font-display); font-size:1.6rem; font-weight:700; letter-spacing:.02em}
+.nav{display:flex; gap:1.25rem}
+.nav a{color:var(--text); opacity:.85}
+.nav a:hover{opacity:1}
 
-/* -------- Utility shim (subset of Tailwind-like classes you used) -------- */
+/* Footer */
+.site-footer{border-top:1px solid var(--border); color:var(--text-muted); font-size:.95rem}
+
+/* Utilities (subset) */
 .min-h-screen{min-height:100vh}
-.mx-auto{margin-left:auto; margin-right:auto}
+.mx-auto{margin-inline:auto}
 .text-center{text-align:center}
 .text-left{text-align:left}
 .font-bold{font-weight:700}
@@ -42,49 +48,40 @@ a:hover{text-decoration:underline}
 .mb-6{margin-bottom:1.5rem}
 .mb-8{margin-bottom:2rem}
 .mb-12{margin-bottom:3rem}
-.py-16{padding-top:4rem; padding-bottom:4rem}
+.py-16{padding-block:4rem}
 .p-6{padding:1.5rem}
 .p-8{padding:2rem}
-.w-32{width:8rem}.h-32{height:8rem}
-.h-48{height:12rem}
-.rounded-lg{border-radius:.5rem}
+
+.rounded-lg{border-radius:.75rem}
 .rounded-full{border-radius:9999px}
 .shadow-lg{box-shadow:0 10px 25px var(--shadow)}
 .object-cover{object-fit:cover}
 .overflow-hidden{overflow:hidden}
-.gap-8{gap:2rem}
 .space-y-12 > * + *{margin-top:3rem}
 
-/* layout widths */
 .max-w-5xl{max-width:64rem}
 .max-w-6xl{max-width:72rem}
 .max-w-7xl{max-width:80rem}
+.px-4{padding-inline:1rem}
+@media (min-width:640px){ .sm\:px-6{padding-inline:1.5rem} }
+@media (min-width:1024px){ .lg\:px-8{padding-inline:2rem} }
 
-/* padding containers */
-.px-4{padding-left:1rem; padding-right:1rem}
-@media (min-width:640px){ .sm\:px-6{padding-left:1.5rem; padding-right:1.5rem} }
-@media (min-width:1024px){ .lg\:px-8{padding-left:2rem; padding-right:2rem} }
-
-/* grid */
-.grid{display:grid}
+/* Grid */
+.grid{display:grid; gap:2rem}
 .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
 @media (min-width:768px){ .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (min-width:1024px){ .lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))} }
 
-/* flex */
+/* Flex */
 .flex{display:flex}
 .flex-col{flex-direction:column}
 .items-center{align-items:center}
 .gap-8{gap:2rem}
 @media (min-width:768px){ .md\:flex-row{flex-direction:row} }
 
-/* images / effects used in includes */
+/* Cards & images */
+.card{background:var(--surface); border:1px solid var(--border); border-radius:.9rem; box-shadow:0 1px 2px var(--shadow)}
 .grayscale{filter:grayscale(100%)}
 .grayscale:hover{filter:none}
 .transition-transform{transition:transform .2s ease}
 .hover\:scale-\[1\.02\]:hover{transform:scale(1.02)}
-
-/* component helpers */
-.card{background:var(--surface); border:1px solid var(--border); border-radius:.75rem; box-shadow:0 1px 2px var(--shadow)}
-.muted{color:var(--text-muted)}
-.display{font-family:var(--font-display)}
