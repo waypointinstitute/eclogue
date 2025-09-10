@@ -1,3 +1,4 @@
+title: ECLOGUE PRESS
 url: https://waypointinstitute.github.io
 baseurl: /eclogue
 
@@ -7,7 +8,7 @@ plugins:
 
 collections:
   team:
-    output: false        # we list them on /about/, we don't need individual pages
+    output: false
   books:
-    output: true         # optional if you have a /books page and detail pages
+    output: true
     permalink: /books/:name/
