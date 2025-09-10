@@ -1,28 +1,20 @@
-<article class="group cursor-pointer">
-  <a href="{{ book.url | relative_url }}">
-    <div class="overflow-hidden rounded-lg mb-4 shadow-lg" style="box-shadow: 0 4px 15px var(--shadow);">
-      <img
-        src="{{ book.cover_image | default: 'https://placehold.co/400x600/f7f3ea/1e1a16?text=Cover' }}"
-        alt="{{ book.title }}"
-        class="w-full aspect-[2/3] object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-    </div>
-    <div class="text-center">
-      <h3 class="text-lg font-semibold leading-tight group-hover:opacity-80"
-          style="font-family: var(--font-display); color: var(--text);">
-        {{ book.title }}
-      </h3>
-      <p class="text-sm" style="color: var(--text-muted);">
-        {{ book.author }}
-      </p>
-      {% assign status = book.status | downcase %}
-      <span class="mt-2 text-xs capitalize badge
-        {% if status == 'available' %}bg-green-100 text-green-800
-        {% elsif status == 'forthcoming' %}bg-yellow-100 text-yellow-800
-        {% elsif status == 'sold-out' %}bg-red-100 text-red-800
-        {% endif %}">
-        {{ book.status | capitalize }}
-      </span>
-    </div>
-  </a>
+<article class="rounded-lg overflow-hidden"
+         style="background-color: var(--surface); box-shadow: 0 1px 2px var(--shadow);">
+  {% if include.cover %}
+    <a href="{{ include.url | relative_url }}" class="block">
+      <img src="{{ include.cover | relative_url }}" alt=""
+           class="w-full h-56 object-cover grayscale hover:grayscale-0 transition-transform duration-200 hover:scale-[1.02]">
+    </a>
+  {% endif %}
+  <div class="p-6">
+    <h3 class="text-xl font-semibold mb-2" style="color: var(--text);">
+      <a href="{{ include.url | relative_url }}">{{ include.title }}</a>
+    </h3>
+    {% if include.author %}
+      <p class="text-sm mb-2" style="color: var(--text-muted);">{{ include.author }}</p>
+    {% endif %}
+    {% if include.blurb %}
+      <p class="text-sm" style="color: var(--text);">{{ include.blurb }}</p>
+    {% endif %}
+  </div>
 </article>
