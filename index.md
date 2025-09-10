@@ -4,10 +4,11 @@ title: Home
 ---
 
 <section class="parallax" style="height: min(58vh, 640px);">
-  <img src="{{ '/assets/hero/base-fantasy.webp'  | relative_url }}" alt="" class="hero-base">
-  <img src="{{ '/assets/hero/fg-fantasy.webp'    | relative_url }}" alt="" class="parallax-layer fg"   data-depth="0.10">
-  <img src="{{ '/assets/hero/mid-fantasy.webp'   | relative_url }}" alt="" class="parallax-layer mid"  data-depth="0.05">
-  <img src="{{ '/assets/hero/stars-fantasy.webp' | relative_url }}" alt="" class="parallax-layer stars" data-depth="0.02">
+<img src="{{ '/assets/hero/base-fantasy.webp'  | relative_url }}" alt="" class="hero-base">
+<img src="{{ '/assets/hero/mid-fantasy.webp'   | relative_url }}" alt="" class="parallax-layer mid"   data-depth="0.04">
+<img src="{{ '/assets/hero/stars-fantasy.webp' | relative_url }}" alt="" class="parallax-layer stars" data-depth="0.02">
+<img src="{{ '/assets/hero/fg-fantasy.webp'    | relative_url }}" alt="" class="parallax-layer fg"    data-depth="0.08">
+
 
   <div class="hero-overlay">
     <h1 class="hero-title display">Eclogue Press</h1>
