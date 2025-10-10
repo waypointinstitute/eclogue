@@ -13,11 +13,13 @@ The dev server opens automatically. Authoring data while the server is running w
 
 ## Building for GitHub Pages
 
-The project is configured so `npm run build` emits the production bundle directly into the `docs/` directory, which works with the GitHub Pages "Deploy from /docs" option. Data files in `docs/data` are preserved during the build.
+The project is configured so `npm run build` emits the production bundle directly into the `docs/` directory. A GitHub Actions workflow (`deploy.yml`) builds the site on every push to `main` and publishes the output to GitHub Pages, so the live site always reflects the latest commit without manually checking in build artifacts.
 
 ```bash
 npm run build
 ```
+
+> **Tip:** If you open the published site immediately after a commit and see a blank page, wait for the `Deploy` workflow to finish (or run `npm run build` locally and commit the `docs/` output for a one-off hotfix).
 
 To preview the build locally:
 
@@ -56,9 +58,9 @@ Overdream writes save slots to IndexedDB using the `idb` helper. If IndexedDB is
 
 ## Deployment notes
 
-1. Ensure the repository's GitHub Pages settings are configured to deploy from the `/docs` directory.
-2. Commit the contents of `docs/` so that data files and the latest production build are available to Pages.
-3. Re-run `npm run build` before publishing significant changes.
+1. In the repository settings, set GitHub Pages to deploy via **GitHub Actions** so the `Deploy` workflow can publish the built site automatically.
+2. Verify that the workflow succeeds after each push; the run summary links directly to the live URL.
+3. If you need to hotfix the live site without waiting for CI, run `npm run build` locally and commit the generated files under `docs/`.
 
 ## Roadmap
 
