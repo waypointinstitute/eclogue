@@ -1,0 +1,34 @@
+{
+  "slip": {
+    "baseIntervalSec": 120,
+    "tensionGainPerAction": 1.5,
+    "thinPlaceMultipliers": {
+      "library": 1.4,
+      "station": 1.2
+    },
+    "calmActions": {
+      "breathing": -12,
+      "ritual_candle": -25
+    }
+  },
+  "intrusion": {
+    "instabilityPerSlip": 4,
+    "metaDreamThreshold": 18,
+    "cooldownSec": 90
+  },
+  "palettes": [
+    { "when": { "moralityMin": 40 }, "apply": "luminous" },
+    { "when": { "moralityMax": -40 }, "apply": "gothic" }
+  ],
+  "spawns": [
+    { "when": { "manipulativeMin": 0.6 }, "add": ["trickster_imp", "echo_wraith"] },
+    { "when": { "dietHas": ["empire"] }, "add": ["ruin_archivist", "patrolling_statue"] }
+  ],
+  "music": [
+    { "when": { "dietHas": ["lullaby"] }, "motif": "lullaby_a" }
+  ],
+  "puzzles": [
+    { "when": { "moralityMin": 50 }, "mod": "bridge_forms_on_approach" },
+    { "when": { "moralityMax": -50 }, "mod": "doors_relocate_on_lookaway" }
+  ]
+}

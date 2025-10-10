@@ -1,0 +1,23 @@
+{
+  "locations": [
+    {
+      "id": "library",
+      "name": "Insomniac Library",
+      "type": "thin_place",
+      "neighbors": ["plaza"],
+      "description": "Stacks hum softly with the breath of unshelved memories."
+    },
+    {
+      "id": "plaza",
+      "name": "Mirrored Plaza",
+      "neighbors": ["library", "station"],
+      "description": "An open plaza of stone tiles that reflect distant clouds."
+    },
+    {
+      "id": "station",
+      "name": "Night Station",
+      "neighbors": ["plaza"],
+      "description": "Trains arrive empty and depart with echoes."
+    }
+  ]
+}

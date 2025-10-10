@@ -1,0 +1,29 @@
+{
+  "ui": {
+    "menu": {
+      "title": "Overdream",
+      "start": "Begin",
+      "continue": "Continue",
+      "settings": "Settings",
+      "codex": "Codex",
+      "accessibility": "Accessibility"
+    },
+    "hud": {
+      "location": "Location",
+      "slip": "Slip Tension",
+      "morality": "Morality",
+      "interaction": "Interaction Style",
+      "ecologyHint": "Dream ecology shifted"
+    },
+    "codex": {
+      "discovered": "Discovered Lore",
+      "locked": "Undiscovered"
+    },
+    "saves": {
+      "save": "Save",
+      "load": "Load",
+      "clear": "Clear",
+      "slot": "Slot"
+    }
+  }
+}
