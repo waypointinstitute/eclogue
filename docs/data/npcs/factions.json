@@ -1,0 +1,16 @@
+{
+  "factions": [
+    {
+      "id": "keepers",
+      "name": "Keepers of the Unspooled",
+      "description": "Archivists who believe dreams should remain unedited.",
+      "alignment": "cooperative"
+    },
+    {
+      "id": "cartographers",
+      "name": "Cartographers of K",
+      "description": "They chart impossible routes and seed them into sleepers.",
+      "alignment": "manipulative"
+    }
+  ]
+}
