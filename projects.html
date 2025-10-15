@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects | Wrenley Built Stone & Paver Gallery</title>
+  <meta name="description" content="View Wrenley Built stonework, paver driveways, and walkway projects completed around Bend, Oregon.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <meta property="og:title" content="Projects | Wrenley Built">
+  <meta property="og:description" content="Filter Wrenley Built projects by masonry, pavers, walkways, steps, patios, and retaining walls.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-username.github.io/eclogue/projects.html">
+  <meta property="og:image" content="https://your-username.github.io/eclogue/assets/img/hero-illustration.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MasonryContractor",
+    "name": "Wrenley Built",
+    "url": "https://your-username.github.io/eclogue/",
+    "image": "https://your-username.github.io/eclogue/assets/img/logo-placeholder.svg",
+    "telephone": "+1-541-555-0130",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Mockingbird Ln",
+      "addressLocality": "Bend",
+      "addressRegion": "OR",
+      "postalCode": "97701",
+      "addressCountry": "US"
+    },
+    "areaServed": "Bend, Oregon",
+    "sameAs": []
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html"><img src="assets/img/logo-placeholder.svg" alt="Wrenley Built"></a>
+      <button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <nav aria-label="Primary">
+        <a href="services.html">Services</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="container reveal">
+      <h1>Project gallery</h1>
+      <p class="lead">Filter by scope to see permeable paver driveways, natural stone walkways, and retaining solutions throughout Bend.</p>
+    </section>
+
+    <section class="container reveal">
+      <div id="filters" class="filters" aria-label="Project filters"></div>
+      <div id="gallery" class="gallery" data-source="assets/data/projects.json"></div>
+    </section>
+
+    <section class="container reveal">
+      <h2>Case study: Pilot Butte driveway</h2>
+      <div class="before-after" data-project="pilot-bend-drive">
+        <img src="assets/img/projects/pilot-drive-before.svg" alt="Pilot Butte driveway before" loading="lazy">
+        <div class="before-after__after">
+          <img src="assets/img/projects/pilot-drive-after.svg" alt="Pilot Butte driveway after" loading="lazy">
+        </div>
+        <div class="before-after__slider" aria-hidden="true">
+          <div class="before-after__handle" style="left: 50%">
+            <div class="before-after__knob"></div>
+          </div>
+        </div>
+      </div>
+      <p>We regraded the slope, installed a 6-inch open graded base with geotextile separation, then laid permeable pavers with a herringbone pattern to resist snow-load shifting.</p>
+    </section>
+
+    <section class="container reveal">
+      <h2>Need more details?</h2>
+      <p>Request material samples, cost ranges, and scheduling availability for your project.</p>
+      <a class="btn btn-primary" href="contact.html#quote">Request a quote</a>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <img src="assets/img/logo-placeholder.svg" alt="Wrenley Built" width="180" height="46" loading="lazy">
+        <p>Stonework that endures. Wrenley Built crafts long-lasting stonemasonry, paver patios, and walkways across Bend, Oregon.</p>
+      </div>
+      <div>
+        <h3>Visit</h3>
+        <p>123 Mockingbird Ln<br>Bend, OR 97701</p>
+        <p><a href="tel:+15415550130">(541) 555-0130</a><br><a href="mailto:hello@wrenleybuilt.com">hello@wrenleybuilt.com</a></p>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <ul class="list-check">
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-cta">
+      <span>CCB #000000 • Bend, OR</span>
+      <a class="btn btn-primary" href="contact.html#quote">Request a quote</a>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/gallery.js" defer></script>
+</body>
+</html>

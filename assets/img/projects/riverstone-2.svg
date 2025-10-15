@@ -1,0 +1,11 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540' role='img' aria-labelledby='title'>
+  <title id='title'>Riverstone walkway lighting</title>
+  <rect width='960' height='540' fill='#c6e3cd'/>
+  <g fill='#63a66c'>
+    <circle cx='180' cy='260' r='60'/>
+    <circle cx='360' cy='220' r='48'/>
+    <circle cx='520' cy='260' r='54'/>
+    <circle cx='720' cy='220' r='60'/>
+  </g>
+  <path d='M80 420 H880' stroke='#2f7d4a' stroke-width='80' stroke-linecap='round' opacity='0.6'/>
+</svg>

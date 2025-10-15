@@ -1,0 +1,13 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540' role='img' aria-labelledby='title'>
+  <title id='title'>Pilot Butte driveway detail</title>
+  <rect width='960' height='540' fill='#d5e9d9'/>
+  <g fill='#2f7d4a'>
+    <rect x='80' y='260' width='800' height='160' rx='24'/>
+    <rect x='120' y='200' width='720' height='60' rx='20' opacity='0.8'/>
+    <rect x='160' y='140' width='640' height='60' rx='18' opacity='0.65'/>
+  </g>
+  <g fill='#0e3b24' opacity='0.5'>
+    <rect x='90' y='420' width='780' height='40' rx='12'/>
+    <rect x='140' y='360' width='680' height='36' rx='12'/>
+  </g>
+</svg>

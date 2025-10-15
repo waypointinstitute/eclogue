@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" role="img" aria-labelledby="title desc">
+  <title id="title">Stone texture illustration</title>
+  <desc id="desc">Organic blocks and lines suggesting stacked stone textures.</desc>
+  <rect width="600" height="360" fill="#e6f3e9" />
+  <g stroke="#2f7d4a" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.8">
+    <path d="M40 80 H560" />
+    <path d="M60 140 H540" />
+    <path d="M40 200 H560" />
+    <path d="M80 260 H520" />
+    <path d="M60 320 H540" />
+  </g>
+  <g fill="#1f5a35" opacity="0.12">
+    <rect x="70" y="40" width="120" height="56" rx="12" />
+    <rect x="220" y="60" width="160" height="60" rx="12" />
+    <rect x="420" y="40" width="120" height="70" rx="12" />
+    <rect x="120" y="140" width="160" height="60" rx="12" />
+    <rect x="340" y="140" width="180" height="60" rx="12" />
+    <rect x="90" y="220" width="200" height="56" rx="12" />
+    <rect x="320" y="220" width="180" height="56" rx="12" />
+    <rect x="150" y="290" width="200" height="44" rx="12" />
+  </g>
+</svg>
