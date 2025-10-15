@@ -1,0 +1,43 @@
+[
+  {
+    "id": "pilot-bend-drive",
+    "title": "Paver Driveway – Pilot Butte",
+    "tags": ["Pavers", "Driveways"],
+    "thumb": "assets/img/projects/pilot-drive-thumb.svg",
+    "images": [
+      "assets/img/projects/pilot-drive-1.svg",
+      "assets/img/projects/pilot-drive-2.svg"
+    ],
+    "beforeAfter": {
+      "before": "assets/img/projects/pilot-drive-before.svg",
+      "after": "assets/img/projects/pilot-drive-after.svg"
+    },
+    "summary": "Permeable pavers over engineered base for winter durability.",
+    "meta": {
+      "sqft": 900,
+      "materials": ["permeable paver", "polymeric sand"],
+      "completed": "2025-09"
+    }
+  },
+  {
+    "id": "riverstone-walk",
+    "title": "Natural Stone Walkway – Old Mill",
+    "tags": ["Walkways", "Masonry"],
+    "thumb": "assets/img/projects/riverstone-thumb.svg",
+    "images": [
+      "assets/img/projects/riverstone-1.svg",
+      "assets/img/projects/riverstone-2.svg"
+    ],
+    "summary": "Hand-set flagstone over compacted base with concealed edging."
+  },
+  {
+    "id": "deschutes-steps",
+    "title": "Terraced Steps – Deschutes River Trail",
+    "tags": ["Steps", "Masonry", "Retaining Walls"],
+    "thumb": "assets/img/projects/deschutes-steps-thumb.svg",
+    "images": [
+      "assets/img/projects/deschutes-steps-1.svg"
+    ],
+    "summary": "Basalt steps tied into a low retaining wall to manage slope transitions."
+  }
+]

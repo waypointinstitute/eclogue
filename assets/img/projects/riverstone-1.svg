@@ -1,0 +1,10 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540' role='img' aria-labelledby='title'>
+  <title id='title'>Riverstone walkway detail</title>
+  <rect width='960' height='540' fill='#d9efe1'/>
+  <g fill='#2f7d4a' opacity='0.9'>
+    <path d='M80 380 C200 280 320 320 440 260 C560 200 680 220 880 160 L880 460 L80 460 Z'/>
+  </g>
+  <g fill='#0e3b24' opacity='0.4'>
+    <path d='M100 420 C200 340 360 360 520 300 C680 240 820 240 900 300 L900 500 L100 500 Z'/>
+  </g>
+</svg>

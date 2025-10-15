@@ -1,0 +1,8 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 480' role='img' aria-labelledby='title'>
+  <title id='title'>Deschutes steps thumbnail</title>
+  <rect width='640' height='480' fill='#e6f3e9'/>
+  <g fill='#1f5a35'>
+    <text x='50%' y='45%' font-family='Inter, system-ui, sans-serif' font-size='42' text-anchor='middle'>Deschutes</text>
+    <text x='50%' y='62%' font-family='Inter, system-ui, sans-serif' font-size='32' text-anchor='middle'>Steps</text>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Pilot Butte driveway before construction</title>
+  <rect width="960" height="540" fill="#f4f7f5" />
+  <g fill="#6a7a71">
+    <rect x="100" y="260" width="760" height="120" rx="18" />
+    <text x="50%" y="52%" font-family="Inter, system-ui, sans-serif" font-size="48" text-anchor="middle" fill="#0b1b13">Before</text>
+  </g>
+</svg>

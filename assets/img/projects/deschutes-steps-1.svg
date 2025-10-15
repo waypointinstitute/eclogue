@@ -1,0 +1,10 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540' role='img' aria-labelledby='title'>
+  <title id='title'>Deschutes stone steps</title>
+  <rect width='960' height='540' fill='#d5e9d9'/>
+  <g fill='#2f7d4a'>
+    <rect x='120' y='360' width='720' height='60' rx='16'/>
+    <rect x='160' y='290' width='640' height='60' rx='16' opacity='0.8'/>
+    <rect x='200' y='220' width='560' height='60' rx='16' opacity='0.65'/>
+    <rect x='240' y='150' width='480' height='60' rx='16' opacity='0.5'/>
+  </g>
+</svg>

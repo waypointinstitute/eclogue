@@ -1,0 +1,22 @@
+name: Link check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lychee:
+    name: Check links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v1.8.0
+        with:
+          args: >-
+            --no-progress
+            --accept 200,204,301,302,303,307,308,403,405,429
+            --include-fragments
+            "**/*.html"
+            "**/*.md"
+          fail-on-warnings: true

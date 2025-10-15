@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" role="img" aria-labelledby="title desc">
+  <title id="title">Abstract stone landscape illustration</title>
+  <desc id="desc">Layered geometric shapes in green hues representing stonework terraces.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e3b24" />
+      <stop offset="100%" stop-color="#2f7d4a" />
+    </linearGradient>
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#63a66c" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#1f5a35" stop-opacity="0.8" />
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="720" fill="url(#bg)" />
+  <g fill="url(#highlight)" opacity="0.85">
+    <path d="M0 520 L220 480 L420 520 L680 460 L920 500 L1180 420 L1440 470 L1440 720 L0 720 Z" />
+    <path d="M0 600 L280 540 L520 600 L760 540 L1040 580 L1320 520 L1440 560 L1440 720 L0 720 Z" opacity="0.5" />
+  </g>
+  <g fill="#e6f3e9" opacity="0.16">
+    <circle cx="220" cy="160" r="120" />
+    <circle cx="520" cy="220" r="80" />
+    <circle cx="920" cy="180" r="140" />
+    <circle cx="1220" cy="140" r="100" />
+  </g>
+</svg>

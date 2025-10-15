@@ -1,12 +1,173 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Overdream</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrenley Built | Bend OR Stonemasonry & Paver Specialists</title>
+  <meta name="description" content="Wrenley Built crafts long-lasting stonemasonry, paver patios, and walkways across Bend, Oregon.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <meta property="og:title" content="Wrenley Built | Bend OR Stonemasonry & Paver Specialists">
+  <meta property="og:description" content="Stonework that endures. Premium stonemasonry, pavers, and walkways in Bend, Oregon.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-username.github.io/eclogue/">
+  <meta property="og:image" content="https://your-username.github.io/eclogue/assets/img/hero-illustration.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MasonryContractor",
+    "name": "Wrenley Built",
+    "url": "https://your-username.github.io/eclogue/",
+    "image": "https://your-username.github.io/eclogue/assets/img/logo-placeholder.svg",
+    "telephone": "+1-541-555-0130",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Mockingbird Ln",
+      "addressLocality": "Bend",
+      "addressRegion": "OR",
+      "postalCode": "97701",
+      "addressCountry": "US"
+    },
+    "areaServed": "Bend, Oregon",
+    "sameAs": []
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html"><img src="assets/img/logo-placeholder.svg" alt="Wrenley Built"></a>
+      <button class="mobile-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <nav aria-label="Primary">
+        <a href="services.html">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero" data-parallax>
+      <div class="hero__overlay"></div>
+      <div class="hero__content container">
+        <h1>Stonework that endures</h1>
+        <p class="lead">Premium stonemasonry, pavers, and walkways in Bend, Oregon.</p>
+        <div class="cta-row" role="group" aria-label="Primary call to actions">
+          <a class="btn btn-primary" href="contact.html#quote">Get a quote</a>
+          <a class="btn btn-outline" href="projects.html">View projects</a>
+        </div>
+        <div class="trust-badges">
+          <span>Licensed &amp; insured</span>
+          <span>Engineered bases</span>
+          <span>Winter-ready installs</span>
+          <span>Clean site management</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-preview container reveal">
+      <h2>Craft, precision, longevity</h2>
+      <p>Wrenley Built delivers tailored hardscapes that stand up to Central Oregon freeze/thaw cycles.</p>
+      <ul class="cards">
+        <li><a href="services.html#masonry"><h3>Stonemasonry</h3><p>Walls, steps, veneers, and custom stone features.</p></a></li>
+        <li><a href="services.html#pavers"><h3>Pavers</h3><p>Patios, driveways, and hardscapes engineered for freeze/thaw.</p></a></li>
+        <li><a href="services.html#walkways"><h3>Walkways</h3><p>Durable paths with proper base, drainage, and edge restraint.</p></a></li>
+      </ul>
+    </section>
+
+    <section class="container reveal">
+      <div class="split">
+        <div>
+          <h2>Why Bend homeowners choose Wrenley Built</h2>
+          <p>Every project starts with subsurface prep—compaction, geotextile, and drainage so the finished surface stays true.</p>
+          <ul class="list-check">
+            <li>Consultative design rooted in how you live outdoors</li>
+            <li>Transparent estimates with material options</li>
+            <li>Detailed handoff and maintenance guide</li>
+          </ul>
+        </div>
+        <div>
+          <img src="assets/img/textures.svg" alt="Detail of stone texture" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="container reveal">
+      <header>
+        <h2>Recent projects</h2>
+        <p>Browse installs ranging from permeable paver driveways to terraced stonework along the Deschutes.</p>
+      </header>
+      <div id="filters" class="filters" aria-label="Project filters"></div>
+      <div id="gallery" class="gallery" data-source="assets/data/projects.json"></div>
+      <div class="sticky-cta">
+        <a class="btn btn-primary" href="projects.html">Explore the full gallery</a>
+      </div>
+    </section>
+
+    <section class="container reveal" data-testimonials>
+      <header>
+        <h2>Trusted by Bend homeowners</h2>
+        <p>Words from neighbors who invested in outdoor spaces built to endure.</p>
+      </header>
+      <div class="testimonials">
+        <div class="testimonials__track"></div>
+      </div>
+    </section>
+
+    <section class="container reveal">
+      <h2>Your questions, answered</h2>
+      <div class="faq" data-faq></div>
+      <a class="btn btn-ghost" href="contact.html#faq">See more details</a>
+    </section>
+
+    <section class="container reveal">
+      <div class="split">
+        <div>
+          <h2>Serving Bend &amp; beyond</h2>
+          <p>From Awbrey Butte to Sunriver, Wrenley Built keeps stonework resilient in high-desert weather. We partner with local suppliers for basalt, flagstone, and permeable paver selections.</p>
+        </div>
+        <div>
+          <h3>Ready for a site visit?</h3>
+          <p>Share your project goals and we'll schedule an on-site consultation.</p>
+          <a class="btn btn-primary" href="contact.html#quote">Request a quote</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <img src="assets/img/logo-placeholder.svg" alt="Wrenley Built" width="180" height="46" loading="lazy">
+        <p>Stonework that endures. Wrenley Built crafts long-lasting stonemasonry, paver patios, and walkways across Bend, Oregon.</p>
+      </div>
+      <div>
+        <h3>Visit</h3>
+        <p>123 Mockingbird Ln<br>Bend, OR 97701</p>
+        <p><a href="tel:+15415550130">(541) 555-0130</a><br><a href="mailto:hello@wrenleybuilt.com">hello@wrenleybuilt.com</a></p>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <ul class="list-check">
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-cta">
+      <span>CCB #000000 • Bend, OR</span>
+      <a class="btn btn-primary" href="contact.html#quote">Request a quote</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/gallery.js" defer></script>
+</body>
 </html>

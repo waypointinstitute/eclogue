@@ -1,0 +1,7 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540' role='img' aria-labelledby='title'>
+  <title id='title'>Pilot Butte driveway curves</title>
+  <rect width='960' height='540' fill='#c6e3cd'/>
+  <path d='M40 420 C240 300 420 360 640 260 C780 200 900 220 920 280 L920 500 L40 500 Z' fill='#2f7d4a' opacity='0.85'/>
+  <path d='M60 460 C260 340 460 380 660 300 C800 250 900 260 940 320 L940 520 L60 520 Z' fill='#1f5a35' opacity='0.55'/>
+  <path d='M0 500 H960' stroke='#0e3b24' stroke-width='36' opacity='0.35'/>
+</svg>
