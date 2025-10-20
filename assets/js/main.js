@@ -40,6 +40,8 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 let revealObserver = null;
 
 if (!prefersReduced && 'IntersectionObserver' in window) {
+  document.documentElement.classList.add('supports-reveal');
+
   revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       entry.target.classList.toggle('reveal-in', entry.isIntersecting);
@@ -49,6 +51,10 @@ if (!prefersReduced && 'IntersectionObserver' in window) {
   const observeAll = () => document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
   observeAll();
   document.addEventListener('reveal:refresh', observeAll);
+} else {
+  const showAll = () => document.querySelectorAll('.reveal').forEach((el) => el.classList.add('reveal-in'));
+  showAll();
+  document.addEventListener('reveal:refresh', showAll);
 }
 
 declareParallax();

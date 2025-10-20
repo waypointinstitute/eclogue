@@ -543,7 +543,7 @@ textarea:focus-visible {
   margin-right: 0.5rem;
 }
 
-.reveal {
+.supports-reveal .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity var(--speed) var(--ease), transform var(--speed) var(--ease);
