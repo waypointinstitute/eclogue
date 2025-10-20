@@ -90,7 +90,7 @@ nav[aria-label='Primary'] a[aria-current='page']::after {
   align-items: center;
   color: var(--white);
   isolation: isolate;
-  background: url('../img/hero-illustration.svg') center/cover no-repeat fixed;
+  background: url('../img/projects/2.7.jpeg') center/cover no-repeat fixed;
 }
 
 .hero__overlay {
