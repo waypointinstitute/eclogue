@@ -58,6 +58,30 @@ main {
   font-size: 0.8rem;
 }
 
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+}
+
+.mobile-toggle.is-active {
+  color: var(--white);
+}
+
+@media (min-width: 721px) {
+  .mobile-toggle {
+    display: none !important;
+  }
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+nav[aria-label='Primary'] {
+  gap: 1rem;
+}
 
 nav[aria-label='Primary'] a {
   position: relative;
@@ -262,6 +286,7 @@ nav[aria-label='Primary'] a[aria-current='page']::after {
   backdrop-filter: blur(12px);
   display: grid;
   gap: 0.35rem;
+  transition: transform 320ms var(--ease), box-shadow 320ms var(--ease), border-color 320ms var(--ease);
 }
 
 .hero__stat strong {
@@ -275,6 +300,15 @@ nav[aria-label='Primary'] a[aria-current='page']::after {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.82);
+}
+
+@media (hover: hover) {
+  .hero__stat:hover,
+  .hero__stat:focus-within {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(224, 185, 115, 0.55);
+  }
 }
 
 @media (min-width: 900px) {
@@ -334,6 +368,7 @@ footer a {
     padding: 5rem 1.5rem 2rem;
     transform: translateY(-100%);
     transition: transform var(--speed) var(--ease);
+    z-index: 20;
   }
 
   nav[aria-label='Primary'].is-open {
