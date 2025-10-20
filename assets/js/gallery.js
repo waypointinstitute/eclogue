@@ -108,7 +108,7 @@ function createLightbox() {
 
   overlay.querySelector('button.close')?.addEventListener('click', closeLightbox);
 
- document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !overlay.hidden) {
       closeLightbox();
     }
@@ -175,7 +175,8 @@ function createBeforeAfter(beforeSrc, afterSrc) {
   const handle = wrapper.querySelector('.before-after__handle');
   if (!afterLayer || !handle) return wrapper;
   afterLayer.style.clipPath = 'inset(0 0 0 50%)';
-  const setPosition = (clientX) => {
+
+  const applyPosition = (clientX) => {
     const bounds = wrapper.getBoundingClientRect();
     if (!bounds.width) return;
     const x = Math.min(Math.max(clientX - bounds.left, 0), bounds.width);
@@ -184,18 +185,33 @@ function createBeforeAfter(beforeSrc, afterSrc) {
     handle.style.left = `${percent}%`;
   };
 
+  let rafId = null;
+  let pendingX = null;
+
+  const schedulePosition = (clientX) => {
+    pendingX = clientX;
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(() => {
+      if (pendingX !== null) {
+        applyPosition(pendingX);
+        pendingX = null;
+      }
+      rafId = null;
+    });
+  };
+
   wrapper.style.touchAction = 'none';
   let activePointer = null;
 
   wrapper.addEventListener('pointerdown', (event) => {
     activePointer = event.pointerId;
     wrapper.setPointerCapture(activePointer);
-    setPosition(event.clientX);
+    schedulePosition(event.clientX);
   });
 
   wrapper.addEventListener('pointermove', (event) => {
     if (activePointer !== event.pointerId) return;
-    setPosition(event.clientX);
+    schedulePosition(event.clientX);
   });
 
   const release = (event) => {
@@ -211,12 +227,27 @@ function createBeforeAfter(beforeSrc, afterSrc) {
   const init = () => {
     const bounds = wrapper.getBoundingClientRect();
     if (bounds.width > 0) {
-      setPosition(bounds.left + bounds.width / 2);
+      applyPosition(bounds.left + bounds.width / 2);
     } else {
       window.requestAnimationFrame(init);
     }
   };
   window.requestAnimationFrame(init);
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(() => {
+      const bounds = wrapper.getBoundingClientRect();
+      if (!bounds.width) return;
+      applyPosition(bounds.left + bounds.width / 2);
+    });
+    resizeObserver.observe(wrapper);
+  } else {
+    window.addEventListener('resize', () => {
+      const bounds = wrapper.getBoundingClientRect();
+      if (!bounds.width) return;
+      applyPosition(bounds.left + bounds.width / 2);
+    });
+  }
   return wrapper;
 }
 
