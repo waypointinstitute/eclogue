@@ -3,14 +3,15 @@
     "id": "pilot-bend-drive",
     "title": "Paver Driveway – Pilot Butte",
     "tags": ["Pavers", "Driveways"],
-    "thumb": "assets/img/projects/pilot-drive-thumb.svg",
+    "thumb": "assets/img/projects/1.3.jpeg",
     "images": [
-      "assets/img/projects/pilot-drive-1.svg",
-      "assets/img/projects/pilot-drive-2.svg"
+      "assets/img/projects/1.1.jpeg",
+      "assets/img/projects/1.2.jpeg",
+      "assets/img/projects/1.3.jpeg"
     ],
     "beforeAfter": {
-      "before": "assets/img/projects/pilot-drive-before.svg",
-      "after": "assets/img/projects/pilot-drive-after.svg"
+      "before": "assets/img/projects/1.1.jpeg",
+      "after": "assets/img/projects/1.3.jpeg"
     },
     "summary": "Permeable pavers over engineered base for winter durability.",
     "meta": {
@@ -20,24 +21,25 @@
     }
   },
   {
-    "id": "riverstone-walk",
-    "title": "Natural Stone Walkway – Old Mill",
-    "tags": ["Walkways", "Masonry"],
-    "thumb": "assets/img/projects/riverstone-thumb.svg",
-    "images": [
-      "assets/img/projects/riverstone-1.svg",
-      "assets/img/projects/riverstone-2.svg"
-    ],
-    "summary": "Hand-set flagstone over compacted base with concealed edging."
-  },
-  {
     "id": "deschutes-steps",
     "title": "Terraced Steps – Deschutes River Trail",
     "tags": ["Steps", "Masonry", "Retaining Walls"],
-    "thumb": "assets/img/projects/deschutes-steps-thumb.svg",
+    "thumb": "assets/img/projects/2.7.jpeg",
     "images": [
-      "assets/img/projects/deschutes-steps-1.svg"
+      "assets/img/projects/2.1.jpeg",
+      "assets/img/projects/2.2.jpeg",
+      "assets/img/projects/2.3.jpeg",
+      "assets/img/projects/2.4.jpeg",
+      "assets/img/projects/2.4.5.jpeg",
+      "assets/img/projects/2.6.jpeg",
+      "assets/img/projects/2.7.jpeg",
+      "assets/img/projects/2.5.mp4",
+      "assets/img/projects/2.8.mp4"
     ],
+    "beforeAfter": {
+      "before": "assets/img/projects/2.1.jpeg",
+      "after": "assets/img/projects/2.7.jpeg"
+    },
     "summary": "Basalt steps tied into a low retaining wall to manage slope transitions."
   }
 ]
