@@ -56,6 +56,7 @@ initMobileNav();
 autoScrollLinks();
 enhanceBeforeAfter();
 document.addEventListener('beforeAfter:refresh', enhanceBeforeAfter);
+initHeroRotator();
 
 function declareParallax() {
   const hero = document.querySelector('[data-parallax]');
@@ -198,6 +199,59 @@ function enhanceBeforeAfter() {
         applyPosition(bounds.left + bounds.width / 2);
       });
     }
+  });
+}
+
+function initHeroRotator() {
+  if (prefersReduced) return;
+  const sections = document.querySelectorAll('[data-hero-rotator]');
+  sections.forEach((section) => {
+    const slides = Array.from(section.querySelectorAll('[data-hero-slide]'));
+    if (slides.length <= 1) return;
+
+    let index = slides.findIndex((slide) => slide.classList.contains('is-active'));
+    if (index < 0) index = 0;
+
+    const setActive = (nextIndex) => {
+      slides[index]?.classList.remove('is-active');
+      index = (nextIndex + slides.length) % slides.length;
+      slides[index]?.classList.add('is-active');
+    };
+
+    let timer = null;
+
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    };
+
+    const play = () => {
+      stop();
+      timer = window.setInterval(() => setActive(index + 1), 6000);
+    };
+
+    slides.forEach((slide) => {
+      slide.addEventListener('mouseenter', stop);
+      slide.addEventListener('mouseleave', play);
+      slide.addEventListener('touchstart', stop, { passive: true });
+      slide.addEventListener('touchend', play);
+    });
+
+    section.addEventListener('mouseenter', stop);
+    section.addEventListener('mouseleave', play);
+    section.addEventListener('touchstart', stop, { passive: true });
+    section.addEventListener('touchend', play);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        play();
+      }
+    });
+
+    setActive(index);
+    play();
   });
 }
 

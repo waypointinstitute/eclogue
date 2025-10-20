@@ -53,51 +53,72 @@
     </div>
   </header>
   <main>
-    <section class="container reveal" id="quote">
-      <h1>Contact &amp; quote request</h1>
-      <p class="lead">Serving Bend, OR and surrounding communities with stonework built for the high desert.</p>
-      <form action="https://formspree.io/f/your-id" method="POST" class="reveal">
-        <label>Full Name
-          <input name="name" required>
-        </label>
-        <label>Email
-          <input type="email" name="email" required>
-        </label>
-        <label>Phone
-          <input name="phone" required>
-        </label>
-        <label>Preferred Contact Method
-          <select name="contact-method">
-            <option>Email</option>
-            <option>Phone</option>
-            <option>Text</option>
-          </select>
-        </label>
-        <label>Service
-          <select name="service">
-            <option>Stonemasonry</option>
-            <option>Pavers</option>
-            <option>Walkways</option>
-            <option>Retaining Walls</option>
-          </select>
-        </label>
-        <label>Project Details
-          <textarea name="details" rows="5" placeholder="Dimensions, material preferences, project timeline"></textarea>
-        </label>
-        <button class="btn btn-primary" type="submit">Request Quote</button>
-      </form>
+    <section class="hero hero--split hero--contact" id="quote">
+      <div class="container">
+        <div class="hero__copy">
+          <span class="badge">Let's build</span>
+          <h1>Share your project vision</h1>
+          <p class="hero__intro">Tell us about your site, timelines, and materials. We'll schedule a consult and outline a build plan tailored to Bend's climate.</p>
+          <ul class="hero__points">
+            <li>Serving Bend, Redmond, Sisters, Sunriver, and Tumalo</li>
+            <li>Owner on-site for consultations and install</li>
+            <li>Five-year workmanship guarantee</li>
+          </ul>
+        </div>
+        <div class="section--panel section--panel--compact">
+          <form action="https://formspree.io/f/your-id" method="POST" class="reveal">
+            <label>Full Name
+              <input name="name" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" required>
+            </label>
+            <label>Phone
+              <input name="phone" required>
+            </label>
+            <label>Preferred Contact Method
+              <select name="contact-method">
+                <option>Email</option>
+                <option>Phone</option>
+                <option>Text</option>
+              </select>
+            </label>
+            <label>Service
+              <select name="service">
+                <option>Stonemasonry</option>
+                <option>Pavers</option>
+                <option>Walkways</option>
+                <option>Retaining Walls</option>
+              </select>
+            </label>
+            <label>Project Details
+              <textarea name="details" rows="5" placeholder="Dimensions, material preferences, project timeline"></textarea>
+            </label>
+            <button class="btn btn-primary" type="submit">Request Quote</button>
+          </form>
+        </div>
+      </div>
     </section>
 
-    <section class="container reveal" id="about">
-      <div class="split">
-        <div>
-          <h2>About Wrenley Built</h2>
-          <p>We founded Wrenley Built to raise the bar for stonework in Bend—attentive to drainage, freeze/thaw movement, and clean job sites. Owner-operated, we stay on the tools and communicate every phase.</p>
-          <p>Our service area includes Bend, Redmond, Sisters, Sunriver, and Tumalo.</p>
-        </div>
-        <div class="map">
-          <iframe title="Map of Bend Oregon" loading="lazy" src="https://www.google.com/maps?q=Bend%2C%20Oregon&amp;output=embed" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
+    <section class="section section--accent reveal" id="about">
+      <h2>About Wrenley Built</h2>
+      <p>We founded Wrenley Built to raise the bar for stonework in Bend—attentive to drainage, freeze/thaw movement, and clean job sites. Owner-operated, we stay on the tools and communicate every phase.</p>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <strong>Service area</strong>
+          <p>Bend, Redmond, Sisters, Sunriver, Tumalo, and surrounding Central Oregon communities.</p>
+        </article>
+        <article class="feature-card">
+          <strong>Hours</strong>
+          <p>Monday–Friday, 8am–5pm. Weekend consultations available by appointment.</p>
+        </article>
+        <article class="feature-card">
+          <strong>Contact</strong>
+          <p><a href="tel:+15415550130">(541) 555-0130</a><br><a href="mailto:hello@wrenleybuilt.com">hello@wrenleybuilt.com</a></p>
+        </article>
+      </div>
+      <div class="map">
+        <iframe title="Map of Bend Oregon" loading="lazy" src="https://www.google.com/maps?q=Bend%2C%20Oregon&amp;output=embed" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </section>
 
