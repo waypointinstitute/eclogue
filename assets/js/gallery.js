@@ -9,20 +9,46 @@ let cachedProjects = [];
 
 async function importDataAndRender() {
   const gallery = document.getElementById('gallery');
-  const source = gallery?.dataset.source;
-  if (!source) return;
+  if (!gallery) return;
+  const source = gallery.dataset.source;
+  const inlineData = readInlineProjects();
   try {
-    const response = await fetch(source);
-    if (!response.ok) throw new Error('Unable to load projects');
-    cachedProjects = await response.json();
-    const tags = [...new Set(cachedProjects.flatMap((p) => p.tags))];
-    renderFilters(tags);
-    renderGrid(cachedProjects);
-    hookFilter(tags, cachedProjects);
+    if (source) {
+      const response = await fetch(source);
+      if (!response.ok) throw new Error('Unable to load projects');
+      cachedProjects = await response.json();
+    }
   } catch (error) {
-    console.error(error);
-    gallery.innerHTML = '<p role="status">Projects will be published soon.</p>';
+    console.warn('Project data request failed, using inline data if available.', error);
+    cachedProjects = inlineData ?? [];
   }
+
+  if (!cachedProjects.length && inlineData?.length) {
+    cachedProjects = inlineData;
+  }
+
+  if (!cachedProjects.length) {
+    gallery.innerHTML = '<p role="status">Projects will be published soon.</p>';
+    return;
+  }
+
+  const tags = [...new Set(cachedProjects.flatMap((p) => p.tags ?? []))];
+  renderFilters(tags);
+  renderGrid(cachedProjects);
+  hookFilter(tags, cachedProjects);
+}
+
+function readInlineProjects() {
+  const script = document.getElementById('projects-data');
+  if (!script) return null;
+  try {
+    const data = JSON.parse(script.textContent || '[]');
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data.projects)) return data.projects;
+  } catch (error) {
+    console.error('Inline projects data failed to parse', error);
+  }
+  return null;
 }
 
 function renderFilters(tags) {
@@ -39,7 +65,7 @@ function renderGrid(items) {
   const gallery = document.getElementById('gallery');
   if (!gallery) return;
   gallery.innerHTML = items.map((project) => `
-    <article class="card reveal" data-tags="${project.tags.join(',')}">
+    <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
       <img loading="lazy" src="${project.thumb}" alt="${project.title}">
       <div class="card__body">
         <h3>${project.title}</h3>
@@ -64,7 +90,7 @@ function hookFilter(tags, projects) {
     filterRoot.querySelectorAll('.chip').forEach((chip) => chip.classList.remove('active'));
     target.classList.add('active');
     const selected = target.dataset.tag;
-    const filtered = selected === 'All' ? projects : projects.filter((p) => p.tags.includes(selected));
+    const filtered = selected === 'All' ? projects : projects.filter((p) => (p.tags ?? []).includes(selected));
     renderGrid(filtered);
   });
 }
@@ -108,7 +134,7 @@ function createLightbox() {
 
   overlay.querySelector('button.close')?.addEventListener('click', closeLightbox);
 
- document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !overlay.hidden) {
       closeLightbox();
     }
@@ -175,7 +201,8 @@ function createBeforeAfter(beforeSrc, afterSrc) {
   const handle = wrapper.querySelector('.before-after__handle');
   if (!afterLayer || !handle) return wrapper;
   afterLayer.style.clipPath = 'inset(0 0 0 50%)';
-  const setPosition = (clientX) => {
+
+  const applyPosition = (clientX) => {
     const bounds = wrapper.getBoundingClientRect();
     if (!bounds.width) return;
     const x = Math.min(Math.max(clientX - bounds.left, 0), bounds.width);
@@ -184,18 +211,33 @@ function createBeforeAfter(beforeSrc, afterSrc) {
     handle.style.left = `${percent}%`;
   };
 
+  let rafId = null;
+  let pendingX = null;
+
+  const schedulePosition = (clientX) => {
+    pendingX = clientX;
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(() => {
+      if (pendingX !== null) {
+        applyPosition(pendingX);
+        pendingX = null;
+      }
+      rafId = null;
+    });
+  };
+
   wrapper.style.touchAction = 'none';
   let activePointer = null;
 
   wrapper.addEventListener('pointerdown', (event) => {
     activePointer = event.pointerId;
     wrapper.setPointerCapture(activePointer);
-    setPosition(event.clientX);
+    schedulePosition(event.clientX);
   });
 
   wrapper.addEventListener('pointermove', (event) => {
     if (activePointer !== event.pointerId) return;
-    setPosition(event.clientX);
+    schedulePosition(event.clientX);
   });
 
   const release = (event) => {
@@ -211,12 +253,27 @@ function createBeforeAfter(beforeSrc, afterSrc) {
   const init = () => {
     const bounds = wrapper.getBoundingClientRect();
     if (bounds.width > 0) {
-      setPosition(bounds.left + bounds.width / 2);
+      applyPosition(bounds.left + bounds.width / 2);
     } else {
       window.requestAnimationFrame(init);
     }
   };
   window.requestAnimationFrame(init);
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(() => {
+      const bounds = wrapper.getBoundingClientRect();
+      if (!bounds.width) return;
+      applyPosition(bounds.left + bounds.width / 2);
+    });
+    resizeObserver.observe(wrapper);
+  } else {
+    window.addEventListener('resize', () => {
+      const bounds = wrapper.getBoundingClientRect();
+      if (!bounds.width) return;
+      applyPosition(bounds.left + bounds.width / 2);
+    });
+  }
   return wrapper;
 }
 
