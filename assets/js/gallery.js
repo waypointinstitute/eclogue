@@ -160,22 +160,7 @@ function populateLightbox(project) {
 
   (project.images ?? []).forEach((src) => {
     const lowerSrc = src.toLowerCase();
-    if (lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm') || lowerSrc.endsWith('.mov')) {
-      const video = document.createElement('video');
-      video.controls = true;
-      video.preload = 'metadata';
-      video.setAttribute('playsinline', '');
-      const source = document.createElement('source');
-      source.src = src;
-      source.type = lowerSrc.endsWith('.webm') ? 'video/webm' : 'video/mp4';
-      video.appendChild(source);
-      video.dataset.dynamic = 'true';
-      gallery.appendChild(video);
-    } else {
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.src = src;
-      img.alt = `${project.title} detail`;
+
       gallery.appendChild(img);
     }
   });

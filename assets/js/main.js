@@ -100,28 +100,7 @@ function initMobileNav() {
     }
   };
 
-  const closeNav = () => {
-    nav.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('keydown', trap);
-    if (previousActive) previousActive.focus();
-  };
-
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-    if (isOpen) {
-      previousActive = document.activeElement;
-      document.addEventListener('keydown', trap);
-      const firstLink = nav.querySelector('a');
-      firstLink?.focus();
-    } else {
-      closeNav();
-    }
-  });
-
-  nav.addEventListener('click', (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
+@@ -88,93 +124,123 @@ function initMobileNav() {
       closeNav();
     }
   });
