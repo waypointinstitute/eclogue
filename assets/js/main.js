@@ -1,13 +1,39 @@
 const header = document.querySelector('.site-header');
 let lastScroll = 0;
+let headerIsCompact = false;
+let headerTicking = false;
 
 if (header) {
-  window.addEventListener('scroll', () => {
+  const updateHeader = () => {
     const y = window.scrollY || window.pageYOffset;
-    const goingDown = y > lastScroll;
-    header.classList.toggle('is-compact', y > 80 && goingDown);
+    const diff = y - lastScroll;
+    let nextCompact = headerIsCompact;
+
+    if (y <= 120) {
+      nextCompact = false;
+    } else if (diff > 6) {
+      nextCompact = true;
+    } else if (diff < -6) {
+      nextCompact = false;
+    }
+
+    if (nextCompact !== headerIsCompact) {
+      header.classList.toggle('is-compact', nextCompact);
+      headerIsCompact = nextCompact;
+    }
+
     lastScroll = y;
+    headerTicking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!headerTicking) {
+      window.requestAnimationFrame(updateHeader);
+      headerTicking = true;
+    }
   }, { passive: true });
+
+  updateHeader();
 }
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,9 +61,19 @@ function declareParallax() {
   const hero = document.querySelector('[data-parallax]');
   if (!hero || prefersReduced) return;
 
-  window.addEventListener('scroll', () => {
+  let rafId = null;
+
+  const update = () => {
     hero.style.backgroundPositionY = `${Math.round((window.scrollY || 0) * 0.25)}px`;
+    rafId = null;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(update);
   }, { passive: true });
+
+  update();
 }
 
 function initMobileNav() {
@@ -63,28 +99,7 @@ function initMobileNav() {
     }
   };
 
-  const closeNav = () => {
-    nav.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('keydown', trap);
-    if (previousActive) previousActive.focus();
-  };
-
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-    if (isOpen) {
-      previousActive = document.activeElement;
-      document.addEventListener('keydown', trap);
-      const firstLink = nav.querySelector('a');
-      firstLink?.focus();
-    } else {
-      closeNav();
-    }
-  });
-
-  nav.addEventListener('click', (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
+@@ -88,93 +124,123 @@ function initMobileNav() {
       closeNav();
     }
   });
@@ -110,7 +125,7 @@ function enhanceBeforeAfter() {
     wrapper.dataset.enhanced = 'true';
     afterLayer.style.clipPath = 'inset(0 0 0 50%)';
 
-    const setPosition = (clientX) => {
+    const applyPosition = (clientX) => {
       const bounds = wrapper.getBoundingClientRect();
       if (!bounds.width) return;
       const x = Math.min(Math.max(clientX - bounds.left, 0), bounds.width);
@@ -119,18 +134,33 @@ function enhanceBeforeAfter() {
       handle.style.left = `${percent}%`;
     };
 
+    let rafId = null;
+    let pendingX = null;
+
+    const schedulePosition = (clientX) => {
+      pendingX = clientX;
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        if (pendingX !== null) {
+          applyPosition(pendingX);
+          pendingX = null;
+        }
+        rafId = null;
+      });
+    };
+
     wrapper.style.touchAction = 'none';
     let activePointer = null;
 
     wrapper.addEventListener('pointerdown', (event) => {
       activePointer = event.pointerId;
       wrapper.setPointerCapture(activePointer);
-      setPosition(event.clientX);
+      schedulePosition(event.clientX);
     });
 
     wrapper.addEventListener('pointermove', (event) => {
       if (activePointer !== event.pointerId) return;
-      setPosition(event.clientX);
+      schedulePosition(event.clientX);
     });
 
     const release = (event) => {
@@ -147,12 +177,27 @@ function enhanceBeforeAfter() {
     const init = () => {
       const bounds = wrapper.getBoundingClientRect();
       if (bounds.width > 0) {
-        setPosition(bounds.left + bounds.width / 2);
+        applyPosition(bounds.left + bounds.width / 2);
       } else {
         window.requestAnimationFrame(init);
       }
     };
     window.requestAnimationFrame(init);
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        const bounds = wrapper.getBoundingClientRect();
+        if (!bounds.width) return;
+        applyPosition(bounds.left + bounds.width / 2);
+      });
+      resizeObserver.observe(wrapper);
+    } else {
+      window.addEventListener('resize', () => {
+        const bounds = wrapper.getBoundingClientRect();
+        if (!bounds.width) return;
+        applyPosition(bounds.left + bounds.width / 2);
+      });
+    }
   });
 }
 
