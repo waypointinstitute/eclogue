@@ -1,13 +1,39 @@
 const header = document.querySelector('.site-header');
 let lastScroll = 0;
+let headerIsCompact = false;
+let headerTicking = false;
 
 if (header) {
-  window.addEventListener('scroll', () => {
+  const updateHeader = () => {
     const y = window.scrollY || window.pageYOffset;
-    const goingDown = y > lastScroll;
-    header.classList.toggle('is-compact', y > 80 && goingDown);
+    const diff = y - lastScroll;
+    let nextCompact = headerIsCompact;
+
+    if (y <= 120) {
+      nextCompact = false;
+    } else if (diff > 6) {
+      nextCompact = true;
+    } else if (diff < -6) {
+      nextCompact = false;
+    }
+
+    if (nextCompact !== headerIsCompact) {
+      header.classList.toggle('is-compact', nextCompact);
+      headerIsCompact = nextCompact;
+    }
+
     lastScroll = y;
+    headerTicking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!headerTicking) {
+      window.requestAnimationFrame(updateHeader);
+      headerTicking = true;
+    }
   }, { passive: true });
+
+  updateHeader();
 }
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -30,14 +56,25 @@ initMobileNav();
 autoScrollLinks();
 enhanceBeforeAfter();
 document.addEventListener('beforeAfter:refresh', enhanceBeforeAfter);
+initHeroRotator();
 
 function declareParallax() {
   const hero = document.querySelector('[data-parallax]');
   if (!hero || prefersReduced) return;
 
-  window.addEventListener('scroll', () => {
+  let rafId = null;
+
+  const update = () => {
     hero.style.backgroundPositionY = `${Math.round((window.scrollY || 0) * 0.25)}px`;
+    rafId = null;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(update);
   }, { passive: true });
+
+  update();
 }
 
 function initMobileNav() {
@@ -110,7 +147,7 @@ function enhanceBeforeAfter() {
     wrapper.dataset.enhanced = 'true';
     afterLayer.style.clipPath = 'inset(0 0 0 50%)';
 
-    const setPosition = (clientX) => {
+    const applyPosition = (clientX) => {
       const bounds = wrapper.getBoundingClientRect();
       if (!bounds.width) return;
       const x = Math.min(Math.max(clientX - bounds.left, 0), bounds.width);
@@ -119,18 +156,33 @@ function enhanceBeforeAfter() {
       handle.style.left = `${percent}%`;
     };
 
+    let rafId = null;
+    let pendingX = null;
+
+    const schedulePosition = (clientX) => {
+      pendingX = clientX;
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        if (pendingX !== null) {
+          applyPosition(pendingX);
+          pendingX = null;
+        }
+        rafId = null;
+      });
+    };
+
     wrapper.style.touchAction = 'none';
     let activePointer = null;
 
     wrapper.addEventListener('pointerdown', (event) => {
       activePointer = event.pointerId;
       wrapper.setPointerCapture(activePointer);
-      setPosition(event.clientX);
+      schedulePosition(event.clientX);
     });
 
     wrapper.addEventListener('pointermove', (event) => {
       if (activePointer !== event.pointerId) return;
-      setPosition(event.clientX);
+      schedulePosition(event.clientX);
     });
 
     const release = (event) => {
@@ -147,12 +199,80 @@ function enhanceBeforeAfter() {
     const init = () => {
       const bounds = wrapper.getBoundingClientRect();
       if (bounds.width > 0) {
-        setPosition(bounds.left + bounds.width / 2);
+        applyPosition(bounds.left + bounds.width / 2);
       } else {
         window.requestAnimationFrame(init);
       }
     };
     window.requestAnimationFrame(init);
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        const bounds = wrapper.getBoundingClientRect();
+        if (!bounds.width) return;
+        applyPosition(bounds.left + bounds.width / 2);
+      });
+      resizeObserver.observe(wrapper);
+    } else {
+      window.addEventListener('resize', () => {
+        const bounds = wrapper.getBoundingClientRect();
+        if (!bounds.width) return;
+        applyPosition(bounds.left + bounds.width / 2);
+      });
+    }
+  });
+}
+
+function initHeroRotator() {
+  if (prefersReduced) return;
+  const sections = document.querySelectorAll('[data-hero-rotator]');
+  sections.forEach((section) => {
+    const slides = Array.from(section.querySelectorAll('[data-hero-slide]'));
+    if (slides.length <= 1) return;
+
+    let index = slides.findIndex((slide) => slide.classList.contains('is-active'));
+    if (index < 0) index = 0;
+
+    const setActive = (nextIndex) => {
+      slides[index]?.classList.remove('is-active');
+      index = (nextIndex + slides.length) % slides.length;
+      slides[index]?.classList.add('is-active');
+    };
+
+    let timer = null;
+
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    };
+
+    const play = () => {
+      stop();
+      timer = window.setInterval(() => setActive(index + 1), 6000);
+    };
+
+    slides.forEach((slide) => {
+      slide.addEventListener('mouseenter', stop);
+      slide.addEventListener('mouseleave', play);
+      slide.addEventListener('touchstart', stop, { passive: true });
+      slide.addEventListener('touchend', play);
+    });
+
+    section.addEventListener('mouseenter', stop);
+    section.addEventListener('mouseleave', play);
+    section.addEventListener('touchstart', stop, { passive: true });
+    section.addEventListener('touchend', play);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        play();
+      }
+    });
+
+    setActive(index);
+    play();
   });
 }
 
