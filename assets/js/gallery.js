@@ -64,15 +64,36 @@ function renderFilters(tags) {
 function renderGrid(items) {
   const gallery = document.getElementById('gallery');
   if (!gallery) return;
-  gallery.innerHTML = items.map((project) => `
-    <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
-      <img loading="lazy" src="${project.thumb}" alt="${project.title}">
-      <div class="card__body">
-        <h3>${project.title}</h3>
-        <p>${project.summary ?? ''}</p>
-        <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+  if (!items.length) {
+    gallery.innerHTML = '<p role="status">No projects match this filter yet.</p>';
+    return;
+  }
+
+  const grouped = items.reduce((map, project) => {
+    const category = project.category ?? 'Other Projects';
+    if (!map.has(category)) {
+      map.set(category, []);
+    }
+    map.get(category)?.push(project);
+    return map;
+  }, new Map());
+
+  gallery.innerHTML = Array.from(grouped.entries()).map(([category, projects]) => `
+    <section class="gallery__group">
+      <h2 class="gallery__group-title">${category}</h2>
+      <div class="gallery__group-grid">
+        ${projects.map((project) => `
+          <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
+            <img loading="lazy" src="${project.thumb}" alt="${project.title}">
+            <div class="card__body">
+              <h3>${project.title}</h3>
+              <p>${project.summary ?? ''}</p>
+              <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+            </div>
+          </article>
+        `).join('')}
       </div>
-    </article>
+    </section>
   `).join('');
 
   gallery.querySelectorAll('button[data-id]').forEach((button) => {
