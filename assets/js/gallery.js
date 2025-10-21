@@ -158,9 +158,26 @@ function populateLightbox(project) {
     gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after));
   }
 
-  (project.images ?? []).forEach((src) => {
+  (project.images ?? []).forEach((src, index) => {
     const lowerSrc = src.toLowerCase();
-
+    if (lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm')) {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('title', `${project.title} installation video`);
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = lowerSrc.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+      video.appendChild(source);
+      gallery.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = src;
+      img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
