@@ -134,24 +134,18 @@ section {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: .5rem;
+  width: fit-content;
+  padding: .375rem .75rem;
+  border-radius: 999px;
+  font-size: .875rem;
   font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1;
+  box-shadow: var(--shadow-md);
   color: var(--green-700);
   background: rgba(51, 130, 76, 0.12);
-  border-radius: 999px;
-  padding: 0.4rem 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-}
-
-.badge::before {
-  content: '';
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(224, 185, 115, 0.35);
+  text-transform: none;
 }
 
 .link-arrow {
@@ -714,4 +708,55 @@ blockquote {
   .hero {
     background-attachment: scroll;
   }
+}
+
+/* ===== Hero / section badges (location, project gallery) ===== */
+/* On image/green overlays, text should be white with a green pill bg */
+.badge--on-hero {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* “Project gallery” pill on Projects hero */
+.badge--gallery {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* Space tweaks for CTA rows near section footers */
+.cta-row,
+.cta-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem .85rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 900px) {
+  .cta-row,
+  .cta-stack {
+    margin-top: 1.25rem;
+  }
+}
+
+/* Guard: hero eyebrow wrapper should not render a long bar */
+.hero-eyebrow,
+.section-eyebrow {
+  display: block;
+  width: 100%;
+}
+
+.hero-eyebrow .badge,
+.section-eyebrow .badge {
+  display: inline-flex;
+}
+
+.trust-highlights {
+  margin-top: 1.5rem;
+}
+
+.trust-highlights .cards {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
