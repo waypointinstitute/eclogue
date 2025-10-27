@@ -64,15 +64,36 @@ function renderFilters(tags) {
 function renderGrid(items) {
   const gallery = document.getElementById('gallery');
   if (!gallery) return;
-  gallery.innerHTML = items.map((project) => `
-    <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
-      <img loading="lazy" src="${project.thumb}" alt="${project.title}">
-      <div class="card__body">
-        <h3>${project.title}</h3>
-        <p>${project.summary ?? ''}</p>
-        <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+  if (!items.length) {
+    gallery.innerHTML = '<p role="status">No projects match this filter yet.</p>';
+    return;
+  }
+
+  const grouped = items.reduce((map, project) => {
+    const category = project.category ?? 'Other Projects';
+    if (!map.has(category)) {
+      map.set(category, []);
+    }
+    map.get(category)?.push(project);
+    return map;
+  }, new Map());
+
+  gallery.innerHTML = Array.from(grouped.entries()).map(([category, projects]) => `
+    <section class="gallery__group">
+      <h2 class="gallery__group-title">${category}</h2>
+      <div class="gallery__group-grid">
+        ${projects.map((project) => `
+          <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
+            <img loading="lazy" src="${project.thumb}" alt="${project.title}">
+            <div class="card__body">
+              <h3>${project.title}</h3>
+              <p>${project.summary ?? ''}</p>
+              <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+            </div>
+          </article>
+        `).join('')}
       </div>
-    </article>
+    </section>
   `).join('');
 
   gallery.querySelectorAll('button[data-id]').forEach((button) => {
@@ -158,9 +179,26 @@ function populateLightbox(project) {
     gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after));
   }
 
-  (project.images ?? []).forEach((src) => {
+  (project.images ?? []).forEach((src, index) => {
     const lowerSrc = src.toLowerCase();
-
+    if (lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm')) {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('title', `${project.title} installation video`);
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = lowerSrc.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+      video.appendChild(source);
+      gallery.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = src;
+      img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
