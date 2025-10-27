@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+const HEIC_REGEX = /\.(heic|heif)$/i;
+
 let cachedProjects = [];
 
 async function importDataAndRender() {
@@ -82,16 +85,7 @@ function renderGrid(items) {
     <section class="gallery__group">
       <h2 class="gallery__group-title">${category}</h2>
       <div class="gallery__group-grid">
-        ${projects.map((project) => `
-          <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
-            <img loading="lazy" src="${project.thumb}" alt="${project.title}">
-            <div class="card__body">
-              <h3>${project.title}</h3>
-              <p>${project.summary ?? ''}</p>
-              <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
-            </div>
-          </article>
-        `).join('')}
+        ${projects.map((project) => renderProjectCard(project)).join('')}
       </div>
     </section>
   `).join('');
@@ -100,6 +94,7 @@ function renderGrid(items) {
     button.addEventListener('click', openLightbox);
   });
   document.dispatchEvent(new Event('reveal:refresh'));
+  document.dispatchEvent(new Event('heic:refresh'));
 }
 
 function hookFilter(tags, projects) {
@@ -176,7 +171,7 @@ function populateLightbox(project) {
 
   const beforeAfter = project.beforeAfter;
   if (beforeAfter?.before && beforeAfter?.after) {
-    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after));
+    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after, project.placeholder));
   }
 
   (project.images ?? []).forEach((src, index) => {
@@ -197,28 +192,47 @@ function populateLightbox(project) {
       const img = document.createElement('img');
       img.loading = 'lazy';
       img.decoding = 'async';
-      img.src = src;
+      setImageSource(img, src, project.placeholder);
       img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
+  document.dispatchEvent(new Event('heic:refresh'));
 }
 
-function createBeforeAfter(beforeSrc, afterSrc) {
+function createBeforeAfter(beforeSrc, afterSrc, fallback) {
   const wrapper = document.createElement('div');
   wrapper.className = 'before-after';
   wrapper.dataset.dynamic = 'true';
-  wrapper.innerHTML = `
-    <img src="${beforeSrc}" alt="Before construction">
-    <div class="before-after__after">
-      <img src="${afterSrc}" alt="After construction">
-    </div>
-    <div class="before-after__slider" aria-hidden="true">
-      <div class="before-after__handle" style="left: 50%">
-        <div class="before-after__knob"></div>
-      </div>
-    </div>
-  `;
+
+  const beforeImg = document.createElement('img');
+  beforeImg.alt = 'Before construction';
+  beforeImg.loading = 'lazy';
+  beforeImg.decoding = 'async';
+  setImageSource(beforeImg, beforeSrc, fallback);
+  wrapper.appendChild(beforeImg);
+
+  const afterContainer = document.createElement('div');
+  afterContainer.className = 'before-after__after';
+  const afterImg = document.createElement('img');
+  afterImg.alt = 'After construction';
+  afterImg.loading = 'lazy';
+  afterImg.decoding = 'async';
+  setImageSource(afterImg, afterSrc, fallback);
+  afterContainer.appendChild(afterImg);
+  wrapper.appendChild(afterContainer);
+
+  const slider = document.createElement('div');
+  slider.className = 'before-after__slider';
+  slider.setAttribute('aria-hidden', 'true');
+  const handleEl = document.createElement('div');
+  handleEl.className = 'before-after__handle';
+  handleEl.style.left = '50%';
+  const knob = document.createElement('div');
+  knob.className = 'before-after__knob';
+  handleEl.appendChild(knob);
+  slider.appendChild(handleEl);
+  wrapper.appendChild(slider);
 
   const afterLayer = wrapper.querySelector('.before-after__after');
   const handle = wrapper.querySelector('.before-after__handle');
@@ -303,4 +317,59 @@ function createBeforeAfter(beforeSrc, afterSrc) {
 function closeLightbox() {
   lightbox.hidden = true;
   document.body.style.overflow = '';
+}
+
+function renderProjectCard(project) {
+  const tags = (project.tags ?? []).join(',');
+  const thumbMarkup = createImageMarkup(project.thumb, project.title, project.placeholder);
+  const title = escapeHtml(project.title);
+  const summary = escapeHtml(project.summary ?? '');
+  return `
+    <article class="card reveal" data-tags="${escapeAttr(tags)}">
+      ${thumbMarkup}
+      <div class="card__body">
+        <h3>${title}</h3>
+        <p>${summary}</p>
+        <button class="btn btn-ghost" data-id="${escapeAttr(project.id)}" aria-label="Open ${escapeAttr(project.title)} gallery">View</button>
+      </div>
+    </article>
+  `;
+}
+
+function createImageMarkup(src, alt, fallback) {
+  const altText = escapeAttr(alt);
+  if (HEIC_REGEX.test(src)) {
+    const fallbackSrc = fallback || TRANSPARENT_PIXEL;
+    const fallbackAttr = fallback ? ` data-heic-fallback="${escapeAttr(fallback)}"` : '';
+    return `<img loading="lazy" decoding="async" src="${escapeAttr(fallbackSrc)}" alt="${altText}" data-heic-src="${escapeAttr(src)}"${fallbackAttr}>`;
+  }
+  return `<img loading="lazy" decoding="async" src="${escapeAttr(src)}" alt="${altText}">`;
+}
+
+function setImageSource(img, src, fallback) {
+  if (!img) return;
+  if (HEIC_REGEX.test(src)) {
+    img.dataset.heicSrc = src;
+    if (fallback) {
+      img.dataset.heicFallback = fallback;
+      img.src = fallback;
+    } else {
+      img.src = TRANSPARENT_PIXEL;
+    }
+  } else {
+    img.src = src;
+  }
+}
+
+function escapeAttr(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;');
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;');
 }

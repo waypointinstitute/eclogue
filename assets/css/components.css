@@ -753,6 +753,15 @@ blockquote {
   display: inline-flex;
 }
 
+img[data-heic-src] {
+  background: rgba(16, 44, 31, 0.06);
+  transition: opacity 200ms ease;
+}
+
+img[data-heic-processing="true"] {
+  opacity: 0.7;
+}
+
 .trust-highlights {
   margin-top: 1.5rem;
 }

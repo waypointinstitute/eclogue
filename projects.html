@@ -71,13 +71,13 @@
         </div>
         <div class="hero__gallery">
           <figure class="hero__slide is-active" data-hero-slide>
-            <img src="assets/img/projects/2.7.jpeg" alt="Basalt steps on a terraced hillside">
+            <img src="assets/img/projects/2.7.jpeg" data-heic-src="assets/img/projects/6retain.heic" data-heic-fallback="assets/img/projects/2.7.jpeg" alt="Tiered retaining wall with stone steps">
           </figure>
           <figure class="hero__slide" data-hero-slide>
-            <img src="assets/img/projects/1.3.jpeg" alt="Permeable paver driveway at sunset">
+            <img src="assets/img/projects/1.3.jpeg" data-heic-src="assets/img/projects/7pave.heic" data-heic-fallback="assets/img/projects/1.3.jpeg" alt="Courtyard paver patio with contrasting border">
           </figure>
           <figure class="hero__slide" data-hero-slide>
-            <img src="assets/img/projects/2.6.jpeg" alt="Flagstone path with native landscaping">
+            <img src="assets/img/projects/2.6.jpeg" data-heic-src="assets/img/projects/4yard.heic" data-heic-fallback="assets/img/projects/2.6.jpeg" alt="Sodded backyard edged with stonework">
           </figure>
         </div>
       </div>
@@ -182,6 +182,7 @@
           "title": "Courtyard Paver Patio",
           "tags": ["Pavers", "Patios", "Outdoor Living"],
           "thumb": "assets/img/projects/6pave.heic",
+          "placeholder": "assets/img/projects/1.3.jpeg",
           "images": [
             "assets/img/projects/1pave.heic",
             "assets/img/projects/2pave.heic",
@@ -226,6 +227,7 @@
           "title": "Tiered Block Retaining Wall",
           "tags": ["Retaining Walls", "Steps", "Drainage"],
           "thumb": "assets/img/projects/6retain.heic",
+          "placeholder": "assets/img/projects/2.7.jpeg",
           "images": [
             "assets/img/projects/1retain.heic",
             "assets/img/projects/2retain.heic",
@@ -246,6 +248,7 @@
           "title": "Backyard Lawn & Stone Border",
           "tags": ["Landscaping", "Lawns", "Stonework"],
           "thumb": "assets/img/projects/4yard.heic",
+          "placeholder": "assets/img/projects/2.6.jpeg",
           "images": [
             "assets/img/projects/1yard.heic",
             "assets/img/projects/2yard.heic",
@@ -261,6 +264,8 @@
       ]
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.3/dist/heic2any.min.js" defer></script>
+  <script src="assets/js/heic-loader.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/gallery.js" defer></script>
