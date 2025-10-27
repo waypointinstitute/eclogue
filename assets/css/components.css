@@ -134,24 +134,18 @@ section {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: .5rem;
+  width: fit-content;
+  padding: .375rem .75rem;
+  border-radius: 999px;
+  font-size: .875rem;
   font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1;
+  box-shadow: var(--shadow-md);
   color: var(--green-700);
   background: rgba(51, 130, 76, 0.12);
-  border-radius: 999px;
-  padding: 0.4rem 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-}
-
-.badge::before {
-  content: '';
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(224, 185, 115, 0.35);
+  text-transform: none;
 }
 
 .link-arrow {
@@ -260,7 +254,27 @@ section {
   font-size: 0.8rem;
 }
 
-.gallery {
+.gallery { 
+  display: grid;
+  gap: 2.5rem;
+}
+
+.gallery__loading {
+  color: var(--green-700);
+}
+
+.gallery__group {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.gallery__group-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.gallery__group-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
@@ -677,17 +691,101 @@ blockquote {
 }
 
 @media (max-width: 960px) {
-  .gallery {
-    column-count: 2;
+  .gallery__group-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 600px) {
   .gallery {
-    column-count: 1;
+    gap: 2rem;
+  }
+
+  .gallery__group-title {
+    font-size: 1.5rem;
+  }
+
+  .gallery__group-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero {
     background-attachment: scroll;
   }
+}
+
+/* ===== Hero / section badges (location, project gallery) ===== */
+/* On image/green overlays, text should be white with a green pill bg */
+.badge--on-hero {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* “Project gallery” pill on Projects hero */
+.badge--gallery {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* Space tweaks for CTA rows near section footers */
+.cta-row,
+.cta-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem .85rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 900px) {
+  .cta-row,
+  .cta-stack {
+    margin-top: 1.25rem;
+  }
+}
+
+/* Guard: hero eyebrow wrapper should not render a long bar */
+.hero-eyebrow,
+.section-eyebrow {
+  display: block;
+  width: 100%;
+}
+
+.hero-eyebrow .badge,
+.section-eyebrow .badge {
+  display: inline-flex;
+}
+
+img[data-heic-src] {
+  background: rgba(16, 44, 31, 0.06);
+  transition: opacity 200ms ease;
+}
+
+img[data-heic-processing="true"] {
+  opacity: 0.7;
+}
+
+.trust-highlights {
+  margin-top: 1.5rem;
+}
+
+.trust-highlights .cards {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.trust-highlights .cards li {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards h4 {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards p {
+  color: var(--green-700);
+}
+
+.btn--spaced {
+  margin-top: 1.25rem;
 }
