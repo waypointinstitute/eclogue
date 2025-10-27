@@ -1,6 +1,14 @@
 const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 const HEIC_PATTERN = /\.(heic|heif)$/i;
 
+function normalizeHeicResult(result) {
+  if (!result) return null;
+  if (result instanceof Blob) return result;
+  if (result instanceof ArrayBuffer) return new Blob([result], { type: 'image/jpeg' });
+  if (ArrayBuffer.isView(result)) return new Blob([result.buffer], { type: 'image/jpeg' });
+  return null;
+}
+
 function processHeicImages(root = document) {
   const images = root.querySelectorAll('img[data-heic-src]:not([data-heic-processing])');
   images.forEach((img) => {
@@ -22,11 +30,11 @@ async function convertHeicImage(img) {
     let outputBlob = null;
 
     if (typeof window.heic2any === 'function') {
-      const result = await window.heic2any({ blob, toType: 'image/webp', quality: 0.9 });
+      const result = await window.heic2any({ blob, toType: 'image/jpeg', quality: 0.9 });
       if (Array.isArray(result)) {
-        outputBlob = result[0] ?? null;
-      } else if (result instanceof Blob) {
-        outputBlob = result;
+        outputBlob = normalizeHeicResult(result[0]);
+      } else {
+        outputBlob = normalizeHeicResult(result);
       }
     }
 
@@ -38,7 +46,7 @@ async function convertHeicImage(img) {
         canvas.height = bitmap.height;
         const context = canvas.getContext('2d');
         context.drawImage(bitmap, 0, 0);
-        outputBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+        outputBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.92));
       } catch (bitmapError) {
         console.warn('createImageBitmap could not decode HEIC image', bitmapError);
       }

@@ -276,22 +276,6 @@ section {
 
 .gallery__group-grid {
   display: grid;
-  gap: 2.5rem;
-}
-
-.gallery__group {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.gallery__group-title {
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  font-weight: 600;
-  color: var(--green-900);
-}
-
-.gallery__group-grid {
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
