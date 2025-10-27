@@ -254,7 +254,27 @@ section {
   font-size: 0.8rem;
 }
 
-.gallery {
+.gallery { 
+  display: grid;
+  gap: 2.5rem;
+}
+
+.gallery__loading {
+  color: var(--green-700);
+}
+
+.gallery__group {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.gallery__group-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.gallery__group-grid {
   display: grid;
   gap: 2.5rem;
 }
@@ -768,4 +788,20 @@ img[data-heic-processing="true"] {
 
 .trust-highlights .cards {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.trust-highlights .cards li {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards h4 {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards p {
+  color: var(--green-700);
+}
+
+.btn--spaced {
+  margin-top: 1.25rem;
 }
