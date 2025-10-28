@@ -57,11 +57,23 @@ function readInlineProjects() {
 function renderFilters(tags) {
   const el = document.getElementById('filters');
   if (!el) return;
-  el.innerHTML = ['All', ...tags].map((tag, index) => `
-    <button class="chip${index === 0 ? ' active' : ''}" data-tag="${tag}">
-      ${tag}
-    </button>
-  `).join('');
+  if (!tags.length) {
+    if (!el.querySelector('.chip')) {
+      el.innerHTML = '<span class="filters__empty">Project filters will appear as soon as new installs are published.</span>';
+    }
+    return;
+  }
+
+  const options = ['All', ...tags];
+  const current = el.querySelector('.chip.active')?.dataset.tag ?? 'All';
+  el.innerHTML = options.map((tag) => {
+    const isActive = current === tag;
+    return `
+      <button class="chip${isActive ? ' active' : ''}" type="button" data-tag="${escapeAttr(tag)}">
+        ${escapeHtml(tag)}
+      </button>
+    `;
+  }).join('');
 }
 
 function renderGrid(items) {

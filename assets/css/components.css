@@ -310,6 +310,11 @@ section {
   gap: 0.5rem;
 }
 
+.filters__empty {
+  font-size: 0.95rem;
+  color: rgba(12, 24, 18, 0.72);
+}
+
 .chip {
   border-radius: 999px;
   border: 1px solid var(--green-300);

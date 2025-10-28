@@ -86,11 +86,20 @@
     <section class="section section--accent reveal">
       <h2>Filter the work</h2>
       <p>Use the chips below to narrow the gallery to the services you care about—driveways, retaining walls, steps, and more.</p>
-      <div id="filters" class="filters" aria-label="Project filters"></div>
+      <div id="filters" class="filters" aria-label="Project filters">
+        <button class="chip active" type="button" data-tag="All">All</button>
+        <button class="chip" type="button" data-tag="Pavers">Pavers</button>
+        <button class="chip" type="button" data-tag="Retaining Walls">Retaining Walls</button>
+        <button class="chip" type="button" data-tag="Steps">Steps</button>
+        <button class="chip" type="button" data-tag="Outdoor Living">Outdoor Living</button>
+        <button class="chip" type="button" data-tag="Landscaping">Landscaping</button>
+      </div>
     </section>
 
     <section class="container reveal">
-      <div id="gallery" class="gallery" data-source="assets/data/projects.json"></div>
+      <div id="gallery" class="gallery" data-source="assets/data/projects.json">
+        <p class="gallery__loading" role="status">Loading recent projects…</p>
+      </div>
     </section>
 
     <section class="container reveal">
