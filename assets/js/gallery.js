@@ -95,7 +95,7 @@ function renderGrid(items) {
 
   gallery.innerHTML = Array.from(grouped.entries()).map(([category, projects]) => `
     <section class="gallery__group">
-      <h2 class="gallery__group-title">${category}</h2>
+      <h3 class="gallery__group-title">${category}</h3>
       <div class="gallery__group-grid">
         ${projects.map((project) => renderProjectCard(project)).join('')}
       </div>
@@ -342,7 +342,7 @@ function renderProjectCard(project) {
       <div class="card__body">
         <h3>${title}</h3>
         <p>${summary}</p>
-        <button class="btn btn-ghost" data-id="${escapeAttr(project.id)}" aria-label="Open ${escapeAttr(project.title)} gallery">View</button>
+        <button class="btn btn-ghost" type="button" data-id="${escapeAttr(project.id)}" aria-label="Open ${escapeAttr(project.title)} gallery">View</button>
       </div>
     </article>
   `;
