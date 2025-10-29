@@ -54,25 +54,49 @@ function readInlineProjects() {
 function renderFilters(tags) {
   const el = document.getElementById('filters');
   if (!el) return;
-  el.innerHTML = ['All', ...tags].map((tag, index) => `
-    <button class="chip${index === 0 ? ' active' : ''}" data-tag="${tag}">
-      ${tag}
-    </button>
-  `).join('');
+  if (!tags.length) {
+    if (!el.querySelector('.chip')) {
+      el.innerHTML = '<span class="filters__empty">Project filters will appear as soon as new installs are published.</span>';
+    }
+    return;
+  }
+
+  const options = ['All', ...tags];
+  const current = el.querySelector('.chip.active')?.dataset.tag ?? 'All';
+  el.innerHTML = options.map((tag) => {
+    const isActive = current === tag;
+    return `
+      <button class="chip${isActive ? ' active' : ''}" type="button" data-tag="${escapeAttr(tag)}">
+        ${escapeHtml(tag)}
+      </button>
+    `;
+  }).join('');
 }
 
 function renderGrid(items) {
   const gallery = document.getElementById('gallery');
   if (!gallery) return;
-  gallery.innerHTML = items.map((project) => `
-    <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
-      <img loading="lazy" src="${project.thumb}" alt="${project.title}">
-      <div class="card__body">
-        <h3>${project.title}</h3>
-        <p>${project.summary ?? ''}</p>
-        <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+  if (!items.length) {
+    gallery.innerHTML = '<p role="status">No projects match this filter yet.</p>';
+    return;
+  }
+
+  const grouped = items.reduce((map, project) => {
+    const category = project.category ?? 'Other Projects';
+    if (!map.has(category)) {
+      map.set(category, []);
+    }
+    map.get(category)?.push(project);
+    return map;
+  }, new Map());
+
+  gallery.innerHTML = Array.from(grouped.entries()).map(([category, projects]) => `
+    <section class="gallery__group">
+      <h3 class="gallery__group-title">${category}</h3>
+      <div class="gallery__group-grid">
+        ${projects.map((project) => renderProjectCard(project)).join('')}
       </div>
-    </article>
+    </section>
   `).join('');
 
   gallery.querySelectorAll('button[data-id]').forEach((button) => {
@@ -155,32 +179,67 @@ function populateLightbox(project) {
 
   const beforeAfter = project.beforeAfter;
   if (beforeAfter?.before && beforeAfter?.after) {
-    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after));
+    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after, project.placeholder));
   }
 
-  (project.images ?? []).forEach((src) => {
+  (project.images ?? []).forEach((src, index) => {
     const lowerSrc = src.toLowerCase();
-
+    if (lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm')) {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('title', `${project.title} installation video`);
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = lowerSrc.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+      video.appendChild(source);
+      gallery.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      setImageSource(img, src, project.placeholder);
+      img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
 }
 
-function createBeforeAfter(beforeSrc, afterSrc) {
+function createBeforeAfter(beforeSrc, afterSrc, fallback) {
   const wrapper = document.createElement('div');
   wrapper.className = 'before-after';
   wrapper.dataset.dynamic = 'true';
-  wrapper.innerHTML = `
-    <img src="${beforeSrc}" alt="Before construction">
-    <div class="before-after__after">
-      <img src="${afterSrc}" alt="After construction">
-    </div>
-    <div class="before-after__slider" aria-hidden="true">
-      <div class="before-after__handle" style="left: 50%">
-        <div class="before-after__knob"></div>
-      </div>
-    </div>
-  `;
+
+  const beforeImg = document.createElement('img');
+  beforeImg.alt = 'Before construction';
+  beforeImg.loading = 'lazy';
+  beforeImg.decoding = 'async';
+  setImageSource(beforeImg, beforeSrc, fallback);
+  wrapper.appendChild(beforeImg);
+
+  const afterContainer = document.createElement('div');
+  afterContainer.className = 'before-after__after';
+  const afterImg = document.createElement('img');
+  afterImg.alt = 'After construction';
+  afterImg.loading = 'lazy';
+  afterImg.decoding = 'async';
+  setImageSource(afterImg, afterSrc, fallback);
+  afterContainer.appendChild(afterImg);
+  wrapper.appendChild(afterContainer);
+
+  const slider = document.createElement('div');
+  slider.className = 'before-after__slider';
+  slider.setAttribute('aria-hidden', 'true');
+  const handleEl = document.createElement('div');
+  handleEl.className = 'before-after__handle';
+  handleEl.style.left = '50%';
+  const knob = document.createElement('div');
+  knob.className = 'before-after__knob';
+  handleEl.appendChild(knob);
+  slider.appendChild(handleEl);
+  wrapper.appendChild(slider);
 
   const afterLayer = wrapper.querySelector('.before-after__after');
   const handle = wrapper.querySelector('.before-after__handle');
@@ -265,4 +324,48 @@ function createBeforeAfter(beforeSrc, afterSrc) {
 function closeLightbox() {
   lightbox.hidden = true;
   document.body.style.overflow = '';
+}
+
+function renderProjectCard(project) {
+  const tags = (project.tags ?? []).join(',');
+  const thumbMarkup = createImageMarkup(project.thumb, project.title);
+  const title = escapeHtml(project.title);
+  const summary = escapeHtml(project.summary ?? '');
+  return `
+    <article class="card reveal" data-tags="${escapeAttr(tags)}">
+      ${thumbMarkup}
+      <div class="card__body">
+        <h3>${title}</h3>
+        <p>${summary}</p>
+        <button class="btn btn-ghost" type="button" data-id="${escapeAttr(project.id)}" aria-label="Open ${escapeAttr(project.title)} gallery">View</button>
+      </div>
+    </article>
+  `;
+}
+
+function createImageMarkup(src, alt) {
+  const altText = escapeAttr(alt);
+  return `<img loading="lazy" decoding="async" src="${escapeAttr(src)}" alt="${altText}">`;
+}
+
+function setImageSource(img, src, fallback) {
+  if (!img) return;
+  if (src) {
+    img.src = src;
+  } else if (fallback) {
+    img.src = fallback;
+  }
+}
+
+function escapeAttr(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;');
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;');
 }

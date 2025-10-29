@@ -1,7 +1,8 @@
 [
   {
     "id": "pilot-bend-drive",
-    "title": "Paver Driveway – Pilot Butte",
+    "category": "Paver Installations",
+    "title": "Permeable Driveway Rebuild",
     "tags": ["Pavers", "Driveways"],
     "thumb": "assets/img/projects/1.3.jpeg",
     "images": [
@@ -21,8 +22,31 @@
     }
   },
   {
+    "id": "shevlin-paver-courtyard",
+    "category": "Paver Installations",
+    "title": "Courtyard Paver Patio",
+    "tags": ["Pavers", "Patios", "Outdoor Living"],
+    "thumb": "assets/img/projects/6pave.jpeg",
+    "placeholder": "assets/img/projects/1.3.jpeg",
+    "images": [
+      "assets/img/projects/1pave.jpeg",
+      "assets/img/projects/2pave.jpeg",
+      "assets/img/projects/3pave.jpeg",
+      "assets/img/projects/4pave.jpeg",
+      "assets/img/projects/5pave.jpeg",
+      "assets/img/projects/6pave.jpeg",
+      "assets/img/projects/7pave.jpeg"
+    ],
+    "beforeAfter": {
+      "before": "assets/img/projects/1pave.jpeg",
+      "after": "assets/img/projects/7pave.jpeg"
+    },
+    "summary": "Rebuilt a weathered patio with permeable pavers, drainage stone, and a new seating edge."
+  },
+  {
     "id": "deschutes-steps",
-    "title": "Terraced Steps – Deschutes River Trail",
+    "category": "Retaining Walls & Steps",
+    "title": "Terraced Step System",
     "tags": ["Steps", "Masonry", "Retaining Walls"],
     "thumb": "assets/img/projects/2.7.jpeg",
     "images": [
@@ -41,5 +65,45 @@
       "after": "assets/img/projects/2.7.jpeg"
     },
     "summary": "Basalt steps tied into a low retaining wall to manage slope transitions."
+  },
+  {
+    "id": "high-desert-retaining-wall",
+    "category": "Retaining Walls & Steps",
+    "title": "Tiered Block Retaining Wall",
+    "tags": ["Retaining Walls", "Steps", "Drainage"],
+    "thumb": "assets/img/projects/6retain.jpeg",
+    "placeholder": "assets/img/projects/2.7.jpeg",
+    "images": [
+      "assets/img/projects/1retain.jpeg",
+      "assets/img/projects/2retain.jpeg",
+      "assets/img/projects/3retain.jpeg",
+      "assets/img/projects/4retain.jpeg",
+      "assets/img/projects/5retain.jpeg",
+      "assets/img/projects/6retain.jpeg"
+    ],
+    "beforeAfter": {
+      "before": "assets/img/projects/1retain.jpeg",
+      "after": "assets/img/projects/6retain.jpeg"
+    },
+    "summary": "Segmental block wall with stone steps and subsurface drainage to hold the hillside in place."
+  },
+  {
+    "id": "bend-backyard-refresh",
+    "category": "Yard & Turf Installs",
+    "title": "Backyard Lawn & Stone Border",
+    "tags": ["Landscaping", "Lawns", "Stonework"],
+    "thumb": "assets/img/projects/4yard.jpeg",
+    "placeholder": "assets/img/projects/2.6.jpeg",
+    "images": [
+      "assets/img/projects/1yard.jpeg",
+      "assets/img/projects/2yard.jpeg",
+      "assets/img/projects/3yard.jpeg",
+      "assets/img/projects/4yard.jpeg"
+    ],
+    "beforeAfter": {
+      "before": "assets/img/projects/1yard.jpeg",
+      "after": "assets/img/projects/4yard.jpeg"
+    },
+    "summary": "New lawn install with stone border, soil prep, irrigation tuning, and fresh sod delivery."
   }
 ]
