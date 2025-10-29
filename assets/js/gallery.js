@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+const HEIC_REGEX = /\.(heic|heif)$/i;
+
 let cachedProjects = [];
 
 async function importDataAndRender() {
@@ -103,6 +106,7 @@ function renderGrid(items) {
     button.addEventListener('click', openLightbox);
   });
   document.dispatchEvent(new Event('reveal:refresh'));
+  document.dispatchEvent(new Event('heic:refresh'));
 }
 
 function hookFilter(tags, projects) {
@@ -205,6 +209,7 @@ function populateLightbox(project) {
       gallery.appendChild(img);
     }
   });
+  document.dispatchEvent(new Event('heic:refresh'));
 }
 
 function createBeforeAfter(beforeSrc, afterSrc, fallback) {
