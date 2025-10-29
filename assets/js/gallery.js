@@ -333,7 +333,7 @@ function closeLightbox() {
 
 function renderProjectCard(project) {
   const tags = (project.tags ?? []).join(',');
-  const thumbMarkup = createImageMarkup(project.thumb, project.title, project.placeholder);
+  const thumbMarkup = createImageMarkup(project.thumb, project.title);
   const title = escapeHtml(project.title);
   const summary = escapeHtml(project.summary ?? '');
   return `
@@ -348,28 +348,17 @@ function renderProjectCard(project) {
   `;
 }
 
-function createImageMarkup(src, alt, fallback) {
+function createImageMarkup(src, alt) {
   const altText = escapeAttr(alt);
-  if (HEIC_REGEX.test(src)) {
-    const fallbackSrc = fallback || TRANSPARENT_PIXEL;
-    const fallbackAttr = fallback ? ` data-heic-fallback="${escapeAttr(fallback)}"` : '';
-    return `<img loading="lazy" decoding="async" src="${escapeAttr(fallbackSrc)}" alt="${altText}" data-heic-src="${escapeAttr(src)}"${fallbackAttr}>`;
-  }
   return `<img loading="lazy" decoding="async" src="${escapeAttr(src)}" alt="${altText}">`;
 }
 
 function setImageSource(img, src, fallback) {
   if (!img) return;
-  if (HEIC_REGEX.test(src)) {
-    img.dataset.heicSrc = src;
-    if (fallback) {
-      img.dataset.heicFallback = fallback;
-      img.src = fallback;
-    } else {
-      img.src = TRANSPARENT_PIXEL;
-    }
-  } else {
+  if (src) {
     img.src = src;
+  } else if (fallback) {
+    img.src = fallback;
   }
 }
 
