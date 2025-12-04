@@ -64,7 +64,7 @@ p.lead {
 
 .btn-ghost:hover,
 .btn-ghost:focus-visible {
-  background: rgba(99, 166, 108, 0.12);
+  background: rgba(63, 147, 214, 0.12);
 }
 
 .cards {
@@ -105,7 +105,7 @@ section {
 }
 
 .section--accent {
-  background: linear-gradient(160deg, rgba(251, 247, 240, 0.95), rgba(233, 244, 234, 0.9));
+  background: linear-gradient(160deg, rgba(245, 249, 253, 0.96), rgba(229, 241, 251, 0.9));
   padding-block: clamp(3rem, 6vw, 4.5rem);
   border-radius: clamp(0px, 3vw, 48px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), var(--shadow-sm);
@@ -134,24 +134,18 @@ section {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-weight: 600;
-  color: var(--green-700);
-  background: rgba(51, 130, 76, 0.12);
+  gap: .5rem;
+  width: fit-content;
+  padding: .375rem .75rem;
   border-radius: 999px;
-  padding: 0.4rem 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-}
-
-.badge::before {
-  content: '';
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(224, 185, 115, 0.35);
+  font-size: .875rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1;
+  box-shadow: var(--shadow-md);
+  color: var(--green-700);
+  background: rgba(31, 120, 199, 0.12);
+  text-transform: none;
 }
 
 .link-arrow {
@@ -260,7 +254,27 @@ section {
   font-size: 0.8rem;
 }
 
-.gallery {
+.gallery { 
+  display: grid;
+  gap: 2.5rem;
+}
+
+.gallery__loading {
+  color: var(--green-700);
+}
+
+.gallery__group {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.gallery__group-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.gallery__group-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
@@ -294,6 +308,11 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.filters__empty {
+  font-size: 0.95rem;
+  color: rgba(12, 24, 18, 0.72);
 }
 
 .chip {
@@ -367,7 +386,7 @@ section {
   .feature-card:focus-within {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(198, 116, 60, 0.3);
+    border-color: rgba(31, 120, 199, 0.22);
   }
 
   .feature-card:hover .feature-card__media img,
@@ -379,7 +398,7 @@ section {
   .gallery .card:focus-within {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(51, 130, 76, 0.3);
+    border-color: rgba(31, 120, 199, 0.3);
   }
 
   .gallery .card:hover img,
@@ -402,14 +421,14 @@ section {
   .testimonial:focus-within {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(51, 130, 76, 0.25);
+    border-color: rgba(31, 120, 199, 0.25);
   }
 
   .process-step:hover,
   .process-step:focus-within {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(198, 116, 60, 0.25);
+    border-color: rgba(31, 120, 199, 0.2);
   }
 
   .faq details:hover,
@@ -454,7 +473,7 @@ section {
   bottom: 0;
   width: 2px;
   background: var(--white);
-  box-shadow: 0 0 0 1px rgba(14, 59, 36, 0.2);
+  box-shadow: 0 0 0 1px rgba(16, 55, 94, 0.2);
   pointer-events: auto;
   cursor: grab;
   transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
@@ -481,7 +500,7 @@ section {
 }
 
 .before-after__handle:focus-visible .before-after__knob {
-  box-shadow: 0 0 0 4px rgba(224, 185, 115, 0.35), var(--shadow-md);
+  box-shadow: 0 0 0 4px rgba(126, 186, 241, 0.35), var(--shadow-md);
 }
 
 .before-after__handle:active {
@@ -491,7 +510,7 @@ section {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(11, 27, 19, 0.85);
+  background: rgba(9, 24, 43, 0.85);
   display: grid;
   place-items: center;
   padding: 2rem;
@@ -677,17 +696,92 @@ blockquote {
 }
 
 @media (max-width: 960px) {
-  .gallery {
-    column-count: 2;
+  .gallery__group-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 600px) {
   .gallery {
-    column-count: 1;
+    gap: 2rem;
+  }
+
+  .gallery__group-title {
+    font-size: 1.5rem;
+  }
+
+  .gallery__group-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero {
     background-attachment: scroll;
   }
+}
+
+/* ===== Hero / section badges (location, project gallery) ===== */
+/* On image/green overlays, text should be white with a green pill bg */
+.badge--on-hero {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* “Project gallery” pill on Projects hero */
+.badge--gallery {
+  background: var(--green-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* Space tweaks for CTA rows near section footers */
+.cta-row,
+.cta-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem .85rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 900px) {
+  .cta-row,
+  .cta-stack {
+    margin-top: 1.25rem;
+  }
+}
+
+/* Guard: hero eyebrow wrapper should not render a long bar */
+.hero-eyebrow,
+.section-eyebrow {
+  display: block;
+  width: 100%;
+}
+
+.hero-eyebrow .badge,
+.section-eyebrow .badge {
+  display: inline-flex;
+}
+
+.trust-highlights {
+  margin-top: 1.5rem;
+}
+
+.trust-highlights .cards {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.trust-highlights .cards li {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards h4 {
+  color: var(--green-900);
+}
+
+.trust-highlights .cards p {
+  color: var(--green-700);
+}
+
+.btn--spaced {
+  margin-top: 1.25rem;
 }
