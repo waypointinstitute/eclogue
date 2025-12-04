@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+const HEIC_REGEX = /\.(heic|heif)$/i;
+
 let cachedProjects = [];
 
 async function importDataAndRender() {
@@ -104,6 +107,7 @@ function renderGrid(items) {
   });
   window.applyMediaFallbacks?.(gallery);
   document.dispatchEvent(new Event('reveal:refresh'));
+  document.dispatchEvent(new Event('heic:refresh'));
 }
 
 function hookFilter(tags, projects) {
