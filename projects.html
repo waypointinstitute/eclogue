@@ -56,7 +56,7 @@
     <section class="hero hero--split hero--projects" data-hero-rotator data-parallax>
       <div class="container">
         <div class="hero__copy">
-          <span class="badge">Project gallery</span>
+          <span class="badge badge--on-hero">Project gallery</span>
           <h1>See how we re-shape grade, drainage, and outdoor flow</h1>
           <p class="hero__intro">Filter by service type to explore permeable driveways, terraced stonework, and walkable paths built for Bend's freeze/thaw cycles.</p>
           <div class="hero__actions">
@@ -71,13 +71,13 @@
         </div>
         <div class="hero__gallery">
           <figure class="hero__slide is-active" data-hero-slide>
-            <img src="assets/img/projects/2.7.jpeg" alt="Basalt steps overlooking the Deschutes">
+            <img src="assets/img/projects/6retain.jpeg" data-fallback="assets/img/projects/6retain.heic" alt="Tiered retaining wall with stone steps">
           </figure>
           <figure class="hero__slide" data-hero-slide>
-            <img src="assets/img/projects/1.3.jpeg" alt="Permeable paver driveway at sunset">
+            <img src="assets/img/projects/7pave.jpeg" data-fallback="assets/img/projects/7pave.heic" alt="Courtyard paver patio with contrasting border">
           </figure>
           <figure class="hero__slide" data-hero-slide>
-            <img src="assets/img/projects/2.6.jpeg" alt="Flagstone path with native landscaping">
+            <img src="assets/img/projects/4yard.jpeg" data-fallback="assets/img/projects/4yard.heic" alt="Sodded backyard edged with stonework">
           </figure>
         </div>
       </div>
@@ -86,21 +86,84 @@
     <section class="section section--accent reveal">
       <h2>Filter the work</h2>
       <p>Use the chips below to narrow the gallery to the services you care about—driveways, retaining walls, steps, and more.</p>
-      <div id="filters" class="filters" aria-label="Project filters"></div>
+      <div id="filters" class="filters" aria-label="Project filters">
+        <button class="chip active" type="button" data-tag="All">All</button>
+        <button class="chip" type="button" data-tag="Pavers">Pavers</button>
+        <button class="chip" type="button" data-tag="Retaining Walls">Retaining Walls</button>
+        <button class="chip" type="button" data-tag="Steps">Steps</button>
+        <button class="chip" type="button" data-tag="Outdoor Living">Outdoor Living</button>
+        <button class="chip" type="button" data-tag="Landscaping">Landscaping</button>
+      </div>
     </section>
 
     <section class="container reveal">
-      <div id="gallery" class="gallery" data-source="assets/data/projects.json"></div>
+      <div id="gallery" class="gallery" data-source="assets/data/projects.json">
+        <section class="gallery__group">
+          <h3 class="gallery__group-title">Paver Installations</h3>
+          <div class="gallery__group-grid">
+            <article class="card reveal" data-tags="Pavers,Driveways">
+              <img loading="lazy" decoding="async" src="assets/img/projects/1.3.jpeg" alt="Permeable Driveway Rebuild">
+              <div class="card__body">
+                <h3>Permeable Driveway Rebuild</h3>
+                <p>Permeable pavers over engineered base for winter durability.</p>
+                <button class="btn btn-ghost" type="button" data-id="pilot-bend-drive" aria-label="Open Permeable Driveway Rebuild gallery">View</button>
+              </div>
+            </article>
+            <article class="card reveal" data-tags="Pavers,Patios,Outdoor Living">
+              <img src="assets/img/projects/6pave.jpeg" data-fallback="assets/img/projects/6pave.heic" loading="lazy" decoding="async" alt="Courtyard Paver Patio">
+              <div class="card__body">
+                <h3>Courtyard Paver Patio</h3>
+                <p>Rebuilt a weathered patio with permeable pavers, drainage stone, and a new seating edge.</p>
+                <button class="btn btn-ghost" type="button" data-id="shevlin-paver-courtyard" aria-label="Open Courtyard Paver Patio gallery">View</button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="gallery__group">
+          <h3 class="gallery__group-title">Retaining Walls &amp; Steps</h3>
+          <div class="gallery__group-grid">
+            <article class="card reveal" data-tags="Steps,Masonry,Retaining Walls">
+              <img loading="lazy" decoding="async" src="assets/img/projects/2.7.jpeg" alt="Terraced Step System">
+              <div class="card__body">
+                <h3>Terraced Step System</h3>
+                <p>Basalt steps tied into a low retaining wall to manage slope transitions.</p>
+                <button class="btn btn-ghost" type="button" data-id="deschutes-steps" aria-label="Open Terraced Step System gallery">View</button>
+              </div>
+            </article>
+            <article class="card reveal" data-tags="Retaining Walls,Steps,Drainage">
+              <img src="assets/img/projects/6retain.jpeg" data-fallback="assets/img/projects/6retain.heic" loading="lazy" decoding="async" alt="Tiered Block Retaining Wall">
+              <div class="card__body">
+                <h3>Tiered Block Retaining Wall</h3>
+                <p>Segmental block wall with stone steps and subsurface drainage to hold the hillside in place.</p>
+                <button class="btn btn-ghost" type="button" data-id="high-desert-retaining-wall" aria-label="Open Tiered Block Retaining Wall gallery">View</button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="gallery__group">
+          <h3 class="gallery__group-title">Yard &amp; Turf Installs</h3>
+          <div class="gallery__group-grid">
+            <article class="card reveal" data-tags="Landscaping,Lawns,Stonework">
+              <img src="assets/img/projects/4yard.jpeg" data-fallback="assets/img/projects/4yard.heic" loading="lazy" decoding="async" alt="Backyard Lawn &amp; Stone Border">
+              <div class="card__body">
+                <h3>Backyard Lawn &amp; Stone Border</h3>
+                <p>New lawn install with stone border, soil prep, irrigation tuning, and fresh sod delivery.</p>
+                <button class="btn btn-ghost" type="button" data-id="bend-backyard-refresh" aria-label="Open Backyard Lawn &amp; Stone Border gallery">View</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
     </section>
 
     <section class="container reveal">
-      <h2>Case study: Pilot Butte driveway</h2>
+      <h2>Case study: Permeable paver driveway</h2>
       <div class="split">
         <div>
           <div class="before-after" data-project="pilot-bend-drive">
-            <img src="assets/img/projects/1.1.jpeg" alt="Pilot Butte driveway before" loading="lazy">
+            <img src="assets/img/projects/1.1.jpeg" alt="Driveway before construction" loading="lazy">
             <div class="before-after__after">
-              <img src="assets/img/projects/1.3.jpeg" alt="Pilot Butte driveway after" loading="lazy">
+              <img src="assets/img/projects/1.3.jpeg" alt="Driveway after permeable paver install" loading="lazy">
             </div>
             <div class="before-after__slider" aria-hidden="true">
               <div class="before-after__handle" style="left: 50%">
@@ -156,17 +219,18 @@
       "projects": [
         {
           "id": "pilot-bend-drive",
-          "title": "Paver Driveway – Pilot Butte",
+          "category": "Paver Installations",
+          "title": "Permeable Driveway Rebuild",
           "tags": ["Pavers", "Driveways"],
-          "thumb": "assets/img/projects/1.3.jpeg",
+          "thumb": { "src": "assets/img/projects/1.3.jpeg" },
           "images": [
-            "assets/img/projects/1.1.jpeg",
-            "assets/img/projects/1.2.jpeg",
-            "assets/img/projects/1.3.jpeg"
+            { "src": "assets/img/projects/1.1.jpeg" },
+            { "src": "assets/img/projects/1.2.jpeg" },
+            { "src": "assets/img/projects/1.3.jpeg" }
           ],
           "beforeAfter": {
-            "before": "assets/img/projects/1.1.jpeg",
-            "after": "assets/img/projects/1.3.jpeg"
+            "before": { "src": "assets/img/projects/1.1.jpeg" },
+            "after": { "src": "assets/img/projects/1.3.jpeg" }
           },
           "summary": "Permeable pavers over engineered base for winter durability.",
           "meta": {
@@ -176,32 +240,108 @@
           }
         },
         {
-          "id": "deschutes-steps",
-          "title": "Terraced Steps – Deschutes River Trail",
-          "tags": ["Steps", "Masonry", "Retaining Walls"],
-          "thumb": "assets/img/projects/2.7.jpeg",
+          "id": "shevlin-paver-courtyard",
+          "category": "Paver Installations",
+          "title": "Courtyard Paver Patio",
+          "tags": ["Pavers", "Patios", "Outdoor Living"],
+          "thumb": {
+            "src": "assets/img/projects/6pave.jpeg",
+            "fallback": "assets/img/projects/6pave.heic",
+            "placeholder": "assets/img/projects/1.3.jpeg"
+          },
+          "placeholder": "assets/img/projects/1.3.jpeg",
           "images": [
-            "assets/img/projects/2.1.jpeg",
-            "assets/img/projects/2.2.jpeg",
-            "assets/img/projects/2.3.jpeg",
-            "assets/img/projects/2.4.jpeg",
-            "assets/img/projects/2.4.5.jpeg",
-            "assets/img/projects/2.6.jpeg",
-            "assets/img/projects/2.7.jpeg",
+            { "src": "assets/img/projects/1pave.jpeg", "fallback": "assets/img/projects/1pave.heic" },
+            { "src": "assets/img/projects/2pave.jpeg", "fallback": "assets/img/projects/2pave.heic" },
+            { "src": "assets/img/projects/3pave.jpeg", "fallback": "assets/img/projects/3pave.heic" },
+            { "src": "assets/img/projects/4pave.jpeg", "fallback": "assets/img/projects/4pave.heic" },
+            { "src": "assets/img/projects/5pave.jpeg", "fallback": "assets/img/projects/5pave.heic" },
+            { "src": "assets/img/projects/6pave.jpeg", "fallback": "assets/img/projects/6pave.heic" },
+            { "src": "assets/img/projects/7pave.jpeg", "fallback": "assets/img/projects/7pave.heic" }
+          ],
+          "beforeAfter": {
+            "before": { "src": "assets/img/projects/1pave.jpeg", "fallback": "assets/img/projects/1pave.heic" },
+            "after": { "src": "assets/img/projects/7pave.jpeg", "fallback": "assets/img/projects/7pave.heic" }
+          },
+          "summary": "Rebuilt a weathered patio with permeable pavers, drainage stone, and a new seating edge."
+        },
+        {
+          "id": "deschutes-steps",
+          "category": "Retaining Walls & Steps",
+          "title": "Terraced Step System",
+          "tags": ["Steps", "Masonry", "Retaining Walls"],
+          "thumb": { "src": "assets/img/projects/2.7.jpeg" },
+          "images": [
+            { "src": "assets/img/projects/2.1.jpeg" },
+            { "src": "assets/img/projects/2.2.jpeg" },
+            { "src": "assets/img/projects/2.3.jpeg" },
+            { "src": "assets/img/projects/2.4.jpeg" },
+            { "src": "assets/img/projects/2.4.5.jpeg" },
+            { "src": "assets/img/projects/2.6.jpeg" },
+            { "src": "assets/img/projects/2.7.jpeg" },
             "assets/img/projects/2.5.mp4",
             "assets/img/projects/2.8.mp4"
           ],
           "beforeAfter": {
-            "before": "assets/img/projects/2.1.jpeg",
-            "after": "assets/img/projects/2.7.jpeg"
+            "before": { "src": "assets/img/projects/2.1.jpeg" },
+            "after": { "src": "assets/img/projects/2.7.jpeg" }
           },
           "summary": "Basalt steps tied into a low retaining wall to manage slope transitions."
+        },
+        {
+          "id": "high-desert-retaining-wall",
+          "category": "Retaining Walls & Steps",
+          "title": "Tiered Block Retaining Wall",
+          "tags": ["Retaining Walls", "Steps", "Drainage"],
+          "thumb": {
+            "src": "assets/img/projects/6retain.jpeg",
+            "fallback": "assets/img/projects/6retain.heic",
+            "placeholder": "assets/img/projects/2.7.jpeg"
+          },
+          "placeholder": "assets/img/projects/2.7.jpeg",
+          "images": [
+            { "src": "assets/img/projects/1retain.jpeg", "fallback": "assets/img/projects/1retain.heic" },
+            { "src": "assets/img/projects/2retain.jpeg", "fallback": "assets/img/projects/2retain.heic" },
+            { "src": "assets/img/projects/3retain.jpeg", "fallback": "assets/img/projects/3retain.heic" },
+            { "src": "assets/img/projects/4retain.jpeg", "fallback": "assets/img/projects/4retain.heic" },
+            { "src": "assets/img/projects/5retain.jpeg", "fallback": "assets/img/projects/5retain.heic" },
+            { "src": "assets/img/projects/6retain.jpeg", "fallback": "assets/img/projects/6retain.heic" }
+          ],
+          "beforeAfter": {
+            "before": { "src": "assets/img/projects/1retain.jpeg", "fallback": "assets/img/projects/1retain.heic" },
+            "after": { "src": "assets/img/projects/6retain.jpeg", "fallback": "assets/img/projects/6retain.heic" }
+          },
+          "summary": "Segmental block wall with stone steps and subsurface drainage to hold the hillside in place."
+        },
+        {
+          "id": "bend-backyard-refresh",
+          "category": "Yard & Turf Installs",
+          "title": "Backyard Lawn & Stone Border",
+          "tags": ["Landscaping", "Lawns", "Stonework"],
+          "thumb": {
+            "src": "assets/img/projects/4yard.jpeg",
+            "fallback": "assets/img/projects/4yard.heic",
+            "placeholder": "assets/img/projects/2.6.jpeg"
+          },
+          "placeholder": "assets/img/projects/2.6.jpeg",
+          "images": [
+            { "src": "assets/img/projects/1yard.jpeg", "fallback": "assets/img/projects/1yard.heic" },
+            { "src": "assets/img/projects/2yard.jpeg", "fallback": "assets/img/projects/2yard.heic" },
+            { "src": "assets/img/projects/3yard.jpeg", "fallback": "assets/img/projects/3yard.heic" },
+            { "src": "assets/img/projects/4yard.jpeg", "fallback": "assets/img/projects/4yard.heic" }
+          ],
+          "beforeAfter": {
+            "before": { "src": "assets/img/projects/1yard.jpeg", "fallback": "assets/img/projects/1yard.heic" },
+            "after": { "src": "assets/img/projects/4yard.jpeg", "fallback": "assets/img/projects/4yard.heic" }
+          },
+          "summary": "New lawn install with stone border, soil prep, irrigation tuning, and fresh sod delivery."
         }
       ]
     }
   </script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/media-fallbacks.js" defer></script>
   <script src="assets/js/gallery.js" defer></script>
 </body>
 </html>
