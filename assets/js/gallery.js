@@ -105,6 +105,7 @@ function renderGrid(items) {
   gallery.querySelectorAll('button[data-id]').forEach((button) => {
     button.addEventListener('click', openLightbox);
   });
+  window.applyMediaFallbacks?.(gallery);
   document.dispatchEvent(new Event('reveal:refresh'));
   document.dispatchEvent(new Event('heic:refresh'));
 }
@@ -186,9 +187,9 @@ function populateLightbox(project) {
     gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after, project.placeholder));
   }
 
-  (project.images ?? []).forEach((src, index) => {
-    const lowerSrc = src.toLowerCase();
-    if (lowerSrc.endsWith('.mp4') || lowerSrc.endsWith('.webm')) {
+  (project.images ?? []).forEach((entry, index) => {
+    const media = normalizeMediaEntry(entry);
+    if (media.type === 'video') {
       const video = document.createElement('video');
       video.controls = true;
       video.loop = true;
@@ -196,20 +197,21 @@ function populateLightbox(project) {
       video.playsInline = true;
       video.setAttribute('title', `${project.title} installation video`);
       const source = document.createElement('source');
-      source.src = src;
-      source.type = lowerSrc.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+      source.src = media.src;
+      source.type = media.mime;
       video.appendChild(source);
       gallery.appendChild(video);
     } else {
       const img = document.createElement('img');
       img.loading = 'lazy';
       img.decoding = 'async';
-      setImageSource(img, src, project.placeholder);
+      setImageSource(img, media.source, media.placeholder ?? project.placeholder);
       img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
-  document.dispatchEvent(new Event('heic:refresh'));
+
+  window.applyMediaFallbacks?.(gallery);
 }
 
 function createBeforeAfter(beforeSrc, afterSrc, fallback) {
@@ -249,6 +251,8 @@ function createBeforeAfter(beforeSrc, afterSrc, fallback) {
   const afterLayer = wrapper.querySelector('.before-after__after');
   const handle = wrapper.querySelector('.before-after__handle');
   if (!afterLayer || !handle) return wrapper;
+
+  window.applyMediaFallbacks?.(wrapper);
   afterLayer.style.clipPath = 'inset(0 0 0 50%)';
 
   const applyPosition = (clientX) => {
@@ -332,12 +336,12 @@ function closeLightbox() {
 }
 
 function renderProjectCard(project) {
-  const tags = (project.tags ?? []).join(',');
-  const thumbMarkup = createImageMarkup(project.thumb, project.title);
+  const tags = escapeAttr((project.tags ?? []).join(','));
+  const thumbMarkup = createImageMarkup(project.thumb, project.title, project.placeholder);
   const title = escapeHtml(project.title);
   const summary = escapeHtml(project.summary ?? '');
   return `
-    <article class="card reveal" data-tags="${escapeAttr(tags)}">
+    <article class="card reveal" data-tags="${tags}">
       ${thumbMarkup}
       <div class="card__body">
         <h3>${title}</h3>
@@ -348,18 +352,140 @@ function renderProjectCard(project) {
   `;
 }
 
-function createImageMarkup(src, alt) {
-  const altText = escapeAttr(alt);
-  return `<img loading="lazy" decoding="async" src="${escapeAttr(src)}" alt="${altText}">`;
+function createImageMarkup(source, alt, placeholder) {
+  const data = normalizeImageSource(source, { placeholder });
+  const attributes = [
+    'loading="lazy"',
+    'decoding="async"',
+    `alt="${escapeAttr(alt)}"`
+  ];
+
+  if (data.src) {
+    attributes.push(`src="${escapeAttr(data.src)}"`);
+  } else if (data.placeholder) {
+    attributes.push(`src="${escapeAttr(data.placeholder)}"`);
+  } else {
+    attributes.push('src=""');
+  }
+
+  if (data.fallback) {
+    attributes.push(`data-fallback="${escapeAttr(data.fallback)}"`);
+  }
+  if (data.placeholder) {
+    attributes.push(`data-placeholder="${escapeAttr(data.placeholder)}"`);
+  }
+
+  return `<img ${attributes.join(' ')}>`;
 }
 
-function setImageSource(img, src, fallback) {
+function setImageSource(img, source, placeholder) {
   if (!img) return;
-  if (src) {
-    img.src = src;
-  } else if (fallback) {
-    img.src = fallback;
+  const data = normalizeImageSource(source, { placeholder });
+  if (data.placeholder) {
+    img.dataset.placeholder = data.placeholder;
   }
+  if (data.fallback) {
+    img.dataset.fallback = data.fallback;
+  }
+
+  if (data.src) {
+    img.src = data.src;
+    if (img.complete && !img.naturalWidth) {
+      window.requestAnimationFrame(() => {
+        if (!img.naturalWidth) {
+          img.dispatchEvent(new Event('error'));
+        }
+      });
+    }
+  } else if (data.fallback) {
+    img.src = data.fallback;
+  } else if (data.placeholder) {
+    img.src = data.placeholder;
+  }
+}
+
+function normalizeImageSource(source, defaults = {}) {
+  const fallbackValue = typeof defaults.fallback === 'string' ? defaults.fallback : null;
+  const placeholderValue = typeof defaults.placeholder === 'string' ? defaults.placeholder : fallbackValue;
+
+  if (!source) {
+    return {
+      src: null,
+      fallback: fallbackValue,
+      placeholder: placeholderValue
+    };
+  }
+
+  if (typeof source === 'string') {
+    return {
+      src: source,
+      fallback: fallbackValue,
+      placeholder: placeholderValue
+    };
+  }
+
+  if (typeof source === 'object') {
+    return {
+      src: source.src ?? source.jpeg ?? null,
+      fallback: source.fallback ?? source.heic ?? fallbackValue,
+      placeholder: source.placeholder ?? placeholderValue
+    };
+  }
+
+  return {
+    src: null,
+    fallback: fallbackValue,
+    placeholder: placeholderValue
+  };
+}
+
+function normalizeMediaEntry(entry) {
+  if (!entry) {
+    return { type: 'image', source: null, placeholder: null };
+  }
+
+  if (typeof entry === 'string') {
+    const lower = entry.toLowerCase();
+    if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
+      return {
+        type: 'video',
+        src: entry,
+        mime: lower.endsWith('.webm') ? 'video/webm' : 'video/mp4',
+        placeholder: null
+      };
+    }
+    return { type: 'image', source: entry, placeholder: null };
+  }
+
+  if (typeof entry === 'object') {
+    if (entry.type === 'video') {
+      const videoSrc = entry.src ?? entry.url ?? '';
+      const lower = typeof videoSrc === 'string' ? videoSrc.toLowerCase() : '';
+      const mime = entry.mime ?? (lower.endsWith('.webm') ? 'video/webm' : 'video/mp4');
+      return { type: 'video', src: videoSrc, mime, placeholder: entry.placeholder ?? null };
+    }
+
+    const src = entry.src ?? entry.jpeg ?? entry.url ?? '';
+    const fallback = entry.fallback ?? entry.heic ?? null;
+    const placeholder = entry.placeholder ?? null;
+    const lower = typeof src === 'string' ? src.toLowerCase() : '';
+    if (lower && (lower.endsWith('.mp4') || lower.endsWith('.webm'))) {
+      return {
+        type: 'video',
+        src,
+        mime: lower.endsWith('.webm') ? 'video/webm' : 'video/mp4',
+        placeholder
+      };
+    }
+
+    return {
+      type: 'image',
+      source: { src, fallback, placeholder },
+      placeholder
+    };
+  }
+
+  return { type: 'image', source: entry, placeholder: null };
 }
 
 function escapeAttr(value) {
