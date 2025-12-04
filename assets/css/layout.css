@@ -5,8 +5,8 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(198, 116, 60, 0.08), transparent 55%),
-    radial-gradient(circle at 85% -10%, rgba(51, 130, 76, 0.18), transparent 60%),
+  background: radial-gradient(circle at top left, rgba(31, 120, 199, 0.12), transparent 55%),
+    radial-gradient(circle at 85% -10%, rgba(26, 102, 165, 0.16), transparent 60%),
     var(--sand-100);
 }
 
@@ -93,7 +93,7 @@ nav[aria-label='Primary'] a::after {
   inset-inline: 0;
   bottom: -0.5rem;
   height: 2px;
-  background: linear-gradient(90deg, var(--green-500), var(--accent-rust));
+  background: linear-gradient(90deg, var(--green-500), var(--green-300));
   transform: scaleX(0);
   transform-origin: center;
   transition: transform var(--speed) var(--ease);
@@ -109,24 +109,24 @@ nav[aria-label='Primary'] a[aria-current='page']::after {
   position: relative;
   isolation: isolate;
   color: var(--white);
-  background: linear-gradient(140deg, rgba(12, 24, 18, 0.85), rgba(18, 53, 35, 0.7)),
+  background: linear-gradient(140deg, rgba(10, 24, 44, 0.85), rgba(23, 71, 118, 0.7)),
     url('../img/projects/2.7.jpeg') center/cover no-repeat;
   padding-block: clamp(4.5rem, 12vw, 8rem);
   overflow: hidden;
 }
 
 .hero--services {
-  background: linear-gradient(140deg, rgba(12, 24, 18, 0.85), rgba(18, 53, 35, 0.7)),
+  background: linear-gradient(140deg, rgba(10, 24, 44, 0.85), rgba(23, 71, 118, 0.7)),
     url('../img/projects/2.3.jpeg') center/cover no-repeat;
 }
 
 .hero--projects {
-  background: linear-gradient(140deg, rgba(12, 24, 18, 0.85), rgba(18, 53, 35, 0.7)),
+  background: linear-gradient(140deg, rgba(10, 24, 44, 0.85), rgba(23, 71, 118, 0.7)),
     url('../img/projects/2.2.jpeg') center/cover no-repeat;
 }
 
 .hero--contact {
-  background: linear-gradient(140deg, rgba(12, 24, 18, 0.85), rgba(18, 53, 35, 0.7)),
+  background: linear-gradient(140deg, rgba(10, 24, 44, 0.85), rgba(23, 71, 118, 0.7)),
     url('../img/projects/1.2.jpeg') center/cover no-repeat;
 }
 
@@ -135,7 +135,7 @@ nav[aria-label='Primary'] a[aria-current='page']::after {
   content: '';
   position: absolute;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(224, 185, 115, 0.38), transparent 70%);
+  background: radial-gradient(circle, rgba(122, 186, 241, 0.4), transparent 70%);
   filter: blur(0.5px);
   z-index: -1;
 }
