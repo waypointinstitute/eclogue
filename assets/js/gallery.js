@@ -54,30 +54,55 @@ function readInlineProjects() {
 function renderFilters(tags) {
   const el = document.getElementById('filters');
   if (!el) return;
-  el.innerHTML = ['All', ...tags].map((tag, index) => `
-    <button class="chip${index === 0 ? ' active' : ''}" data-tag="${tag}">
-      ${tag}
-    </button>
-  `).join('');
+  if (!tags.length) {
+    if (!el.querySelector('.chip')) {
+      el.innerHTML = '<span class="filters__empty">Project filters will appear as soon as new installs are published.</span>';
+    }
+    return;
+  }
+
+  const options = ['All', ...tags];
+  const current = el.querySelector('.chip.active')?.dataset.tag ?? 'All';
+  el.innerHTML = options.map((tag) => {
+    const isActive = current === tag;
+    return `
+      <button class="chip${isActive ? ' active' : ''}" type="button" data-tag="${escapeAttr(tag)}">
+        ${escapeHtml(tag)}
+      </button>
+    `;
+  }).join('');
 }
 
 function renderGrid(items) {
   const gallery = document.getElementById('gallery');
   if (!gallery) return;
-  gallery.innerHTML = items.map((project) => `
-    <article class="card reveal" data-tags="${(project.tags ?? []).join(',')}">
-      <img loading="lazy" src="${project.thumb}" alt="${project.title}">
-      <div class="card__body">
-        <h3>${project.title}</h3>
-        <p>${project.summary ?? ''}</p>
-        <button class="btn btn-ghost" data-id="${project.id}" aria-label="Open ${project.title} gallery">View</button>
+  if (!items.length) {
+    gallery.innerHTML = '<p role="status">No projects match this filter yet.</p>';
+    return;
+  }
+
+  const grouped = items.reduce((map, project) => {
+    const category = project.category ?? 'Other Projects';
+    if (!map.has(category)) {
+      map.set(category, []);
+    }
+    map.get(category)?.push(project);
+    return map;
+  }, new Map());
+
+  gallery.innerHTML = Array.from(grouped.entries()).map(([category, projects]) => `
+    <section class="gallery__group">
+      <h3 class="gallery__group-title">${category}</h3>
+      <div class="gallery__group-grid">
+        ${projects.map((project) => renderProjectCard(project)).join('')}
       </div>
-    </article>
+    </section>
   `).join('');
 
   gallery.querySelectorAll('button[data-id]').forEach((button) => {
     button.addEventListener('click', openLightbox);
   });
+  window.applyMediaFallbacks?.(gallery);
   document.dispatchEvent(new Event('reveal:refresh'));
 }
 
@@ -155,36 +180,75 @@ function populateLightbox(project) {
 
   const beforeAfter = project.beforeAfter;
   if (beforeAfter?.before && beforeAfter?.after) {
-    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after));
+    gallery.appendChild(createBeforeAfter(beforeAfter.before, beforeAfter.after, project.placeholder));
   }
 
-  (project.images ?? []).forEach((src) => {
-    const lowerSrc = src.toLowerCase();
-
+  (project.images ?? []).forEach((entry, index) => {
+    const media = normalizeMediaEntry(entry);
+    if (media.type === 'video') {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('title', `${project.title} installation video`);
+      const source = document.createElement('source');
+      source.src = media.src;
+      source.type = media.mime;
+      video.appendChild(source);
+      gallery.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      setImageSource(img, media.source, media.placeholder ?? project.placeholder);
+      img.alt = `${project.title} progress photo ${index + 1}`;
       gallery.appendChild(img);
     }
   });
+
+  window.applyMediaFallbacks?.(gallery);
 }
 
-function createBeforeAfter(beforeSrc, afterSrc) {
+function createBeforeAfter(beforeSrc, afterSrc, fallback) {
   const wrapper = document.createElement('div');
   wrapper.className = 'before-after';
   wrapper.dataset.dynamic = 'true';
-  wrapper.innerHTML = `
-    <img src="${beforeSrc}" alt="Before construction">
-    <div class="before-after__after">
-      <img src="${afterSrc}" alt="After construction">
-    </div>
-    <div class="before-after__slider" aria-hidden="true">
-      <div class="before-after__handle" style="left: 50%">
-        <div class="before-after__knob"></div>
-      </div>
-    </div>
-  `;
+
+  const beforeImg = document.createElement('img');
+  beforeImg.alt = 'Before construction';
+  beforeImg.loading = 'lazy';
+  beforeImg.decoding = 'async';
+  setImageSource(beforeImg, beforeSrc, fallback);
+  wrapper.appendChild(beforeImg);
+
+  const afterContainer = document.createElement('div');
+  afterContainer.className = 'before-after__after';
+  const afterImg = document.createElement('img');
+  afterImg.alt = 'After construction';
+  afterImg.loading = 'lazy';
+  afterImg.decoding = 'async';
+  setImageSource(afterImg, afterSrc, fallback);
+  afterContainer.appendChild(afterImg);
+  wrapper.appendChild(afterContainer);
+
+  const slider = document.createElement('div');
+  slider.className = 'before-after__slider';
+  slider.setAttribute('aria-hidden', 'true');
+  const handleEl = document.createElement('div');
+  handleEl.className = 'before-after__handle';
+  handleEl.style.left = '50%';
+  const knob = document.createElement('div');
+  knob.className = 'before-after__knob';
+  handleEl.appendChild(knob);
+  slider.appendChild(handleEl);
+  wrapper.appendChild(slider);
 
   const afterLayer = wrapper.querySelector('.before-after__after');
   const handle = wrapper.querySelector('.before-after__handle');
   if (!afterLayer || !handle) return wrapper;
+
+  window.applyMediaFallbacks?.(wrapper);
   afterLayer.style.clipPath = 'inset(0 0 0 50%)';
 
   const applyPosition = (clientX) => {
@@ -265,4 +329,170 @@ function createBeforeAfter(beforeSrc, afterSrc) {
 function closeLightbox() {
   lightbox.hidden = true;
   document.body.style.overflow = '';
+}
+
+function renderProjectCard(project) {
+  const tags = escapeAttr((project.tags ?? []).join(','));
+  const thumbMarkup = createImageMarkup(project.thumb, project.title, project.placeholder);
+  const title = escapeHtml(project.title);
+  const summary = escapeHtml(project.summary ?? '');
+  return `
+    <article class="card reveal" data-tags="${tags}">
+      ${thumbMarkup}
+      <div class="card__body">
+        <h3>${title}</h3>
+        <p>${summary}</p>
+        <button class="btn btn-ghost" type="button" data-id="${escapeAttr(project.id)}" aria-label="Open ${escapeAttr(project.title)} gallery">View</button>
+      </div>
+    </article>
+  `;
+}
+
+function createImageMarkup(source, alt, placeholder) {
+  const data = normalizeImageSource(source, { placeholder });
+  const attributes = [
+    'loading="lazy"',
+    'decoding="async"',
+    `alt="${escapeAttr(alt)}"`
+  ];
+
+  if (data.src) {
+    attributes.push(`src="${escapeAttr(data.src)}"`);
+  } else if (data.placeholder) {
+    attributes.push(`src="${escapeAttr(data.placeholder)}"`);
+  } else {
+    attributes.push('src=""');
+  }
+
+  if (data.fallback) {
+    attributes.push(`data-fallback="${escapeAttr(data.fallback)}"`);
+  }
+  if (data.placeholder) {
+    attributes.push(`data-placeholder="${escapeAttr(data.placeholder)}"`);
+  }
+
+  return `<img ${attributes.join(' ')}>`;
+}
+
+function setImageSource(img, source, placeholder) {
+  if (!img) return;
+  const data = normalizeImageSource(source, { placeholder });
+  if (data.placeholder) {
+    img.dataset.placeholder = data.placeholder;
+  }
+  if (data.fallback) {
+    img.dataset.fallback = data.fallback;
+  }
+
+  if (data.src) {
+    img.src = data.src;
+    if (img.complete && !img.naturalWidth) {
+      window.requestAnimationFrame(() => {
+        if (!img.naturalWidth) {
+          img.dispatchEvent(new Event('error'));
+        }
+      });
+    }
+  } else if (data.fallback) {
+    img.src = data.fallback;
+  } else if (data.placeholder) {
+    img.src = data.placeholder;
+  }
+}
+
+function normalizeImageSource(source, defaults = {}) {
+  const fallbackValue = typeof defaults.fallback === 'string' ? defaults.fallback : null;
+  const placeholderValue = typeof defaults.placeholder === 'string' ? defaults.placeholder : fallbackValue;
+
+  if (!source) {
+    return {
+      src: null,
+      fallback: fallbackValue,
+      placeholder: placeholderValue
+    };
+  }
+
+  if (typeof source === 'string') {
+    return {
+      src: source,
+      fallback: fallbackValue,
+      placeholder: placeholderValue
+    };
+  }
+
+  if (typeof source === 'object') {
+    return {
+      src: source.src ?? source.jpeg ?? null,
+      fallback: source.fallback ?? source.heic ?? fallbackValue,
+      placeholder: source.placeholder ?? placeholderValue
+    };
+  }
+
+  return {
+    src: null,
+    fallback: fallbackValue,
+    placeholder: placeholderValue
+  };
+}
+
+function normalizeMediaEntry(entry) {
+  if (!entry) {
+    return { type: 'image', source: null, placeholder: null };
+  }
+
+  if (typeof entry === 'string') {
+    const lower = entry.toLowerCase();
+    if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
+      return {
+        type: 'video',
+        src: entry,
+        mime: lower.endsWith('.webm') ? 'video/webm' : 'video/mp4',
+        placeholder: null
+      };
+    }
+    return { type: 'image', source: entry, placeholder: null };
+  }
+
+  if (typeof entry === 'object') {
+    if (entry.type === 'video') {
+      const videoSrc = entry.src ?? entry.url ?? '';
+      const lower = typeof videoSrc === 'string' ? videoSrc.toLowerCase() : '';
+      const mime = entry.mime ?? (lower.endsWith('.webm') ? 'video/webm' : 'video/mp4');
+      return { type: 'video', src: videoSrc, mime, placeholder: entry.placeholder ?? null };
+    }
+
+    const src = entry.src ?? entry.jpeg ?? entry.url ?? '';
+    const fallback = entry.fallback ?? entry.heic ?? null;
+    const placeholder = entry.placeholder ?? null;
+    const lower = typeof src === 'string' ? src.toLowerCase() : '';
+    if (lower && (lower.endsWith('.mp4') || lower.endsWith('.webm'))) {
+      return {
+        type: 'video',
+        src,
+        mime: lower.endsWith('.webm') ? 'video/webm' : 'video/mp4',
+        placeholder
+      };
+    }
+
+    return {
+      type: 'image',
+      source: { src, fallback, placeholder },
+      placeholder
+    };
+  }
+
+  return { type: 'image', source: entry, placeholder: null };
+}
+
+function escapeAttr(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;');
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;');
 }

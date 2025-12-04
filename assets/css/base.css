@@ -1,13 +1,13 @@
 :root {
-  --green-900: #0b2418;
-  --green-800: #123523;
-  --green-700: #1f5231;
-  --green-600: #2a6a3f;
-  --green-500: #33824c;
-  --green-300: #7cb889;
-  --green-100: #e9f4ea;
-  --sand-200: #f4ede3;
-  --sand-100: #fbf7f0;
+  --green-900: #122f1f;
+  --green-800: #1a442c;
+  --green-700: #245a39;
+  --green-600: #2b6c44;
+  --green-500: #2f7d4a;
+  --green-300: #66b07c;
+  --green-100: #e7f2ea;
+  --sand-200: #f0e8de;
+  --sand-100: #f9f5ef;
   --white: #ffffff;
   --ink: #0c1812;
   --muted: #62746a;
@@ -46,8 +46,8 @@ body {
   min-height: 100vh;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   font-feature-settings: 'liga' 1, 'kern' 1;
-  background: radial-gradient(circle at top left, rgba(227, 204, 168, 0.25), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(51, 130, 76, 0.22), transparent 50%),
+  background: radial-gradient(circle at top left, rgba(47, 125, 74, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(47, 125, 74, 0.08), transparent 52%),
     var(--sand-100);
   color: var(--ink);
   line-height: 1.65;
